@@ -28,11 +28,11 @@ public class TfgApplication implements CommandLineRunner {
 
     public void run(String... args){
 
-        try{
+        /*try{
             createGames();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 
