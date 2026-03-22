@@ -2,18 +2,35 @@ package org.tortitas.tfg;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.InsertManyResult;
+import com.mongodb.client.result.InsertOneResult;
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.mongodb.atlas.MongoDBAtlasVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+
+import org.tortitas.tfg.controllers.EmbeddingController;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.repositories.GameRepository;
+
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -22,24 +39,59 @@ public class TfgApplication implements CommandLineRunner {
     @Autowired
     GameRepository gameRepository;
 
+    @Autowired
+    EmbeddingController embeddingController;
+
+    @Autowired
+    VectorStore vectorStore;
+
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);
     }
 
     public void run(String... args){
 
-        /*try{
+        try{
             createGames();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
 
     public void createGames() throws FileNotFoundException {
         Gson gson = new Gson();
         List<Game> games = gson.fromJson(new FileReader("/home/aura/IDEAProjects/tortitasConSirope/src/main/resources/out.json"), new TypeToken<List<Game>>() {});
-        gameRepository.saveAll(games);
+        //gameRepository.saveAll(games);
+        List<Document> documents = new ArrayList<Document>();
+        Document document;
+
+        //MongoClient mongoClient = MongoClients.create("mongodb+srv://suinxpal_db_user:Pg86rgwWPFoEbDp6@pruebamongo.sd54xkt.mongodb.net");
+        //MongoDatabase database = mongoClient.getDatabase("PruebaMongo");
+        //MongoCollection<Document> collection = database.getCollection("games");
+
+        for (Game game : games) {
+            //document = new Document(game.toString(), Arrays.toString(embeddingController.embed(game.game2document())));
+            //System.out.println(document);
+            //System.out.println(Arrays.toString(embeddingController.embed(game.game2document())));
+            documents.add(document);
+            System.out.println(document);
+
+            //TODO: fix the document mess
+
+            String insertedId;
+
+            try{
+                InsertOneResult result = collection.insertOne(document);
+                System.out.println("Inserted id: " + result.getInsertedId());
+            } catch (MongoException me){
+                throw new RuntimeException("Error inserting games", me);
+            }
+        }
+
+
+
+
     }
 
 }

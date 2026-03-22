@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Vector;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -26,4 +28,9 @@ public class Game {
     public String languages;
     public String genres;
     public String tags;
+    Vector<Double> embeddings;
+
+    public org.springframework.ai.document.Document game2document(){
+        return new org.springframework.ai.document.Document(this.toString());
+    }
 }

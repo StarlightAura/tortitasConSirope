@@ -94,6 +94,10 @@
             <version>2.13.2</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>bson</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
