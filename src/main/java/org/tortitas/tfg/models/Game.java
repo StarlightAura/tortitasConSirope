@@ -28,7 +28,7 @@ public class Game {
     public String languages;
     public String genres;
     public String tags;
-    Vector<Double> embeddings;
+    public Vector<Double> embeddings;
 
     public org.springframework.ai.document.Document game2document(){
         return new org.springframework.ai.document.Document(this.toString());

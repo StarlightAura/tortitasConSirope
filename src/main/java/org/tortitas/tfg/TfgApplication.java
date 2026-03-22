@@ -30,7 +30,9 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Vector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @SpringBootApplication
 @EnableMongoRepositories
@@ -62,23 +64,23 @@ public class TfgApplication implements CommandLineRunner {
     public void createGames() throws FileNotFoundException {
         Gson gson = new Gson();
         List<Game> games = gson.fromJson(new FileReader("/home/aura/IDEAProjects/tortitasConSirope/src/main/resources/out.json"), new TypeToken<List<Game>>() {});
-        //gameRepository.saveAll(games);
-        List<Document> documents = new ArrayList<Document>();
-        Document document;
 
-        //MongoClient mongoClient = MongoClients.create("mongodb+srv://suinxpal_db_user:Pg86rgwWPFoEbDp6@pruebamongo.sd54xkt.mongodb.net");
-        //MongoDatabase database = mongoClient.getDatabase("PruebaMongo");
-        //MongoCollection<Document> collection = database.getCollection("games");
+
 
         for (Game game : games) {
-            //document = new Document(game.toString(), Arrays.toString(embeddingController.embed(game.game2document())));
-            //System.out.println(document);
-            //System.out.println(Arrays.toString(embeddingController.embed(game.game2document())));
-            documents.add(document);
-            System.out.println(document);
+            float[] embeddings = embeddingController.embed(game.game2document());
+            //System.out.println(Arrays.toString(embeddings));
+
+            double[] dEmbeddings = IntStream.range(0, embeddings.length).mapToDouble(i -> embeddings[i]).toArray();
+            List<Double> d2Embeddings = Arrays.stream(dEmbeddings).boxed().toList();
+
+            Vector<Double> vEmbeddings = new Vector<Double>(d2Embeddings);
+            game.setEmbeddings(vEmbeddings);
+
+
 
             //TODO: fix the document mess
-
+            /*
             String insertedId;
 
             try{
@@ -87,10 +89,15 @@ public class TfgApplication implements CommandLineRunner {
             } catch (MongoException me){
                 throw new RuntimeException("Error inserting games", me);
             }
+            */
+
+            System.out.println(game);
+
+            gameRepository.save(game);
+
         }
 
-
-
+        //gameRepository.saveAll(games);
 
     }
 
