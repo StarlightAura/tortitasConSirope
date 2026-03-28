@@ -1,5 +1,6 @@
 package org.tortitas.tfg.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Vector;
 
+@JsonIgnoreProperties(ignoreUnknown = true)// con esto ignora campos que no estan en el .json
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

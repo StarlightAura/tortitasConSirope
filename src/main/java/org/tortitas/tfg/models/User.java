@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer chatId;
 
     @Column(unique = true, nullable = false)
     private String nombreUser;
