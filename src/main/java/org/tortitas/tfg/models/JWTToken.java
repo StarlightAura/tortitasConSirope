@@ -8,10 +8,63 @@ import org.jose4j.jwt.JwtClaims;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JWTToken {
 
-    public static void jwtToken() throws JoseException {
+    private final RsaJsonWebKey rsaJsonWebKey;
+
+    // La clave se genera UNA SOLA VEZ al arrancar Spring
+    public JWTToken() throws JoseException {
+        this.rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
+        this.rsaJsonWebKey.setKeyId("k1");
+    }
+
+    public String generateToken(String username) throws JoseException {
+        JwtClaims claims = new JwtClaims();
+        claims.setIssuer("Tortitas");
+        claims.setAudience("Audiencia Nacional");
+        claims.setExpirationTimeMinutesInTheFuture(60);
+        claims.setGeneratedJwtId();
+        claims.setIssuedAtToNow();
+        claims.setNotBeforeMinutesInThePast(2);
+        claims.setSubject(username);
+        claims.setClaim("email", username);
+
+        JsonWebSignature jws = new JsonWebSignature();
+        jws.setPayload(claims.toJson());
+        jws.setKey(rsaJsonWebKey.getPrivateKey());
+        jws.setKeyIdHeaderValue(rsaJsonWebKey.getKeyId());
+        jws.setAlgorithmHeaderValue(AlgorithmIdentifiers.RSA_USING_SHA256);
+
+        return jws.getCompactSerialization();
+    }
+
+    public String validateTokenAndGetUsername(String token) throws Exception {
+        JwtConsumer jwtConsumer = new JwtConsumerBuilder()
+                .setRequireExpirationTime()
+                .setAllowedClockSkewInSeconds(30)
+                .setRequireSubject()
+                .setExpectedIssuer("Tortitas")
+                .setExpectedAudience("Audiencia Nacional")
+                .setVerificationKey(rsaJsonWebKey.getPublicKey())
+                .build();
+
+        return jwtConsumer.processToClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String token) {
+        try {
+            validateTokenAndGetUsername(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+}
+
+/* public static void jwtToken() throws JoseException {
 
         RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(2048);
         rsaJsonWebKey.setKeyId("k1"); // key id
@@ -51,6 +104,5 @@ public class JWTToken {
                 .setRequireExpirationTime() // tiene que tener tiempo de vida
                 .setAllowedClockSkewInSeconds(30)
 
- */
-    }
-}
+
+    }*/
