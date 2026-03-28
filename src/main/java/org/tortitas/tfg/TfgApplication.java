@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 
 @SpringBootApplication
 @EnableMongoRepositories
-public class TfgApplication  {
+public class TfgApplication {
 
     @Autowired
     GameRepository gameRepository;
@@ -36,15 +36,23 @@ public class TfgApplication  {
 
     @Autowired
     private GameService gameService;
+
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);
     }
+
     @Bean
     public CommandLineRunner cargarDatos() {
         return args -> {
-            gameService.cargarJuegosDesdeJson("src/main/resources/out.json");
+            long count = gameRepository.count();
+            if (count == 0) {
+                gameService.cargarJuegosDesdeJson("src/main/resources/out.json");
+            } else {
+                System.out.println("Juegos ya cargados en MongoDB (" + count + "), saltando carga.");
+            }
         };
-    }}
+    }
+}
 //    public void run(String... args){
 //
 //        try{
