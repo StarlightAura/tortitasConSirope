@@ -1,12 +1,12 @@
-package org.tfg.api.mysql.login.controller;
+package org.tortitas.tfg.mysql.login.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tfg.api.mysql.login.dto.UserResponseDTO;
-import org.tfg.api.mysql.login.repository.UserRepository;
-import org.tfg.api.mysql.login.service.AdminService;
+import org.tortitas.tfg.mysql.login.service.AdminService;
+
 
 import java.util.List;
 

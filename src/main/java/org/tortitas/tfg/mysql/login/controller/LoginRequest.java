@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.controller;
+package org.tortitas.tfg.mysql.login.controller;
 
 public record LoginRequest(
         String email,

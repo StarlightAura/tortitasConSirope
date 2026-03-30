@@ -1,10 +1,11 @@
-package org.tfg.api.mysql.login.controller;
+package org.tortitas.tfg.mysql.login.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.tfg.api.mysql.login.service.AuthService;
+import org.tortitas.tfg.mysql.login.service.AuthService;
+
 
 @RestController
 @RequestMapping("/auth")
