@@ -14,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.tortitas.tfg.mysql.login.repository.Token;
+import org.tortitas.tfg.mysql.login.repository.TokenRepository;
 
 
 @Configuration

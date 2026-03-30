@@ -14,6 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.tortitas.tfg.mysql.login.model.User;
+import org.tortitas.tfg.mysql.login.repository.Token;
+import org.tortitas.tfg.mysql.login.repository.TokenRepository;
+import org.tortitas.tfg.mysql.login.repository.UserRepository;
+import org.tortitas.tfg.mysql.login.service.JwtService;
 
 
 import java.io.IOException;
