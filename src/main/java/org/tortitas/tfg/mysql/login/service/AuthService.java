@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.service;
+package org.tortitas.tfg.mysql.login.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -6,13 +6,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.tfg.api.mysql.login.controller.LoginRequest;
-import org.tfg.api.mysql.login.controller.RegisterRequest;
-import org.tfg.api.mysql.login.controller.TokenResponse;
-import org.tfg.api.mysql.login.model.User;
-import org.tfg.api.mysql.login.repository.Token;
-import org.tfg.api.mysql.login.repository.TokenRepository;
-import org.tfg.api.mysql.login.repository.UserRepository;
+import org.tortitas.tfg.mysql.login.controller.LoginRequest;
+import org.tortitas.tfg.mysql.login.controller.RegisterRequest;
+import org.tortitas.tfg.mysql.login.controller.TokenResponse;
+import org.tortitas.tfg.mysql.login.model.User;
+import org.tortitas.tfg.mysql.login.repository.Token;
+import org.tortitas.tfg.mysql.login.repository.TokenRepository;
+import org.tortitas.tfg.mysql.login.repository.UserRepository;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +36,7 @@ public class AuthService {
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
                 .build();
-        var savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         var jwtToken = jwtService.generateToken(savedUser);
         var refreshToken = jwtService.generateRefreshToken(savedUser);

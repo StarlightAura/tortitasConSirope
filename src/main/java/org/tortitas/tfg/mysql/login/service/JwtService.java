@@ -1,11 +1,12 @@
-package org.tfg.api.mysql.login.service;
+package org.tortitas.tfg.mysql.login.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
-import org.tfg.api.mysql.login.config.JwtConfig;
-import org.tfg.api.mysql.login.model.User;
+import org.tortitas.tfg.mysql.login.config.JwtConfig;
+import org.tortitas.tfg.mysql.login.model.User;
+
 
 import javax.crypto.SecretKey;
 import java.util.Date;

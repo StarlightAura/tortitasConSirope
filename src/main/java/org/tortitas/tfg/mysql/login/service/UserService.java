@@ -1,7 +1,8 @@
-package org.tfg.api.mysql.login.service;
+package org.tortitas.tfg.mysql.login.service;
 
 import org.springframework.stereotype.Service;
-import org.tfg.api.mysql.login.repository.UserRepository;
+import org.tortitas.tfg.mysql.login.repository.UserRepository;
+
 
 @Service
 public class UserService {
