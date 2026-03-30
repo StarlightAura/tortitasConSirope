@@ -1,11 +1,12 @@
-package org.tfg.api.mysql.login.repository;
+package org.tortitas.tfg.mysql.login.repository;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.tfg.api.mysql.login.model.User;
+import org.tortitas.tfg.mysql.login.model.User;
+
 
 import java.io.Serializable;
 

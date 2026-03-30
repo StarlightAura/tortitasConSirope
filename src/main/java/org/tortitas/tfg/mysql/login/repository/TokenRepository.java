@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.repository;
+package org.tortitas.tfg.mysql.login.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
