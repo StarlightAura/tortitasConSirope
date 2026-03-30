@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.Exception;
+package org.tortitas.tfg.mysql.login.Exception;
 
 public class UserNotFoundException extends RuntimeException{
 
