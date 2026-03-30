@@ -1,9 +1,10 @@
-package org.tfg.api.mysql.login.mapper;
+package org.tortitas.tfg.mysql.login.mapper;
 
 import org.tfg.api.mysql.login.dto.UserCreateDTO;
 import org.tfg.api.mysql.login.dto.UserResponseDTO;
-import org.tfg.api.mysql.login.model.Role;
-import org.tfg.api.mysql.login.model.User;
+import org.tortitas.tfg.mysql.login.model.Role;
+import org.tortitas.tfg.mysql.login.model.User;
+
 
 public class UserMapper {
 
