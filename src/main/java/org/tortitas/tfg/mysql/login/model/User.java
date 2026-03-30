@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.model;
+package org.tortitas.tfg.mysql.login.model;
 
 import jakarta.persistence.*;
 import lombok.*;
