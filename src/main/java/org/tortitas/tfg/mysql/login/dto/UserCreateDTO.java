@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.dto;
+package org.tortitas.tfg.mysql.login.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,7 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.tfg.api.mysql.login.model.Role;
+import org.tortitas.tfg.mysql.login.model.Role;
+
 
 @Getter
 @AllArgsConstructor

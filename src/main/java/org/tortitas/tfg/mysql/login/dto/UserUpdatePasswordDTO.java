@@ -1,4 +1,4 @@
-package org.tfg.api.mysql.login.dto;
+package org.tortitas.tfg.mysql.login.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
