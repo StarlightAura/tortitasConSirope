@@ -9,7 +9,7 @@ services:
       - DATABASE_URL=jdbc:postgresql://games:5432/postgres
       - DATABASE_USERNAME=postgres
       - DATABASE_PASSWORD=postgres
-      - SPRING_MONGODB_URI=mongodb+srv://lauramm_db_user:siropeGames@pruebamongo.sd54xkt.mongodb.net/?appName=PruebaMongo
+      - SPRING_MONGODB_URI=mongodb+srv://noor:Cheema_2002@cluster0.8mujuld.mongodb.net/?appName=Cluster0
       - TELEGRAM_BOT_TOKEN=8693576752:AAF-cq5pD0jOFHYnRobtD9p8BoCy26gQLPM
       - TELEGRAM_BOT_USERNAME=SiropeGamersBot
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
