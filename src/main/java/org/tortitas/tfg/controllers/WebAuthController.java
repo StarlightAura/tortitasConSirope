@@ -37,11 +37,11 @@ public class WebAuthController {
         nuevo.setPassword(passwordEncoder.encode(password)); // Ciframos la clave
 
         // Si es el primero, lo hacemos ADMIN
-        if (userRepo.count() == 0) {
+       /* if (userRepo.count() == 0) {
             nuevo.setRol("ROL_ADMIN");
         } else {
             nuevo.setRol("ROL_USER");
-        }
+        }*/
 
         userRepo.save(nuevo);
         return "redirect:/auth/login";
