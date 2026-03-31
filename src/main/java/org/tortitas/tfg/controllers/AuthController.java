@@ -4,10 +4,7 @@ import org.jose4j.lang.JoseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.UserRepo;
@@ -19,9 +16,7 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private UserRepo userRepo;
-    @Autowired private JWTToken jwtToken;
+    @Autowired private UserRepo userRepo;
     @Autowired private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
@@ -33,6 +28,8 @@ public class AuthController {
         userRepo.save(user);
         return ResponseEntity.ok("Usuario registrado correctamente");
     }
+
+    @Autowired private JWTToken jwtToken;
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody Map<String, String> creds) throws JoseException {

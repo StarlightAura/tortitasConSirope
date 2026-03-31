@@ -15,15 +15,13 @@ import java.util.Vector;
 @RestController
 @RequestMapping("/api")
 public class GameController {
-
+    @Autowired
+    private GameService gameService;
+    @Autowired private JWTToken jwtToken;
     @Autowired
     private GameRepository gameRepository;
     @Autowired
     private OllamaEmbeddingModel ollamaEmbeddingModel;
-    @Autowired
-    private GameService gameService;
-    @Autowired private JWTToken jwtToken;
-
     @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
             @RequestParam String product,
@@ -41,7 +39,6 @@ public class GameController {
         List<String> recomendaciones = gameService.recomendar(product);
         return ResponseEntity.ok(recomendaciones);
     }
-
     @PostMapping("/products")
     public ResponseEntity<?> insertarProducto(
             @RequestBody Game juego,
