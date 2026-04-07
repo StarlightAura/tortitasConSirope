@@ -46,7 +46,7 @@ public class SiropeGameBot extends TelegramLongPollingBot {
     }
     private final String botName;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String API_BASE = "http://springapp:8087";
+    private final String API_BASE = "http://springapp:8787";
 
     public SiropeGameBot(
             @Value("${telegram.bot.token}") String botToken,

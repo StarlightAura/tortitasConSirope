@@ -13,7 +13,7 @@ services:
       - TELEGRAM_BOT_TOKEN=8693576752:AAF-cq5pD0jOFHYnRobtD9p8BoCy26gQLPM
       - TELEGRAM_BOT_USERNAME=SiropeGamersBot
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SERVER_PORT=8087
+      - SERVER_PORT=8787
       - SPRING_SECURITY_USER_NAME=disable
       - SPRING_AUTOCONFIGURE_EXCLUDE=org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
       - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434/
