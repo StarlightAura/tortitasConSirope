@@ -179,7 +179,7 @@ public class SiropeGameBot extends TelegramLongPollingBot {
 
             String token = (String) respuesta.get("token");
             tokensUsuarios.put(chatId, token); // guarda el JWT por chatId
-            return "✅ ¡Login correcto! Ya puedes usar /recomendar <juego>.";
+            return "✅ ¡Login correcto! Ya puedes escribir 'recomendar' + 'juego'.";
 
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == 401) {
@@ -217,9 +217,9 @@ public class SiropeGameBot extends TelegramLongPollingBot {
                 tokensUsuarios.remove(chatId); // token expirado, limpiamos
                 return "❌ Tu sesión ha expirado. Usa /login para volver a entrar.";
             }
-            return "❌ Error al obtener recomendaciones.";
+            return "❌ Error al obtener recomendaciones." + e.getStatusCode().value();
         } catch (Exception e) {
-            return "❌ Error al conectar con el servidor.";
+            return "❌ Error al conectar con el servidor." + e.getMessage();
         }
     }
 

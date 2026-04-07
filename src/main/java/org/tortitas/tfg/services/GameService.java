@@ -63,6 +63,7 @@ public class GameService {
                 ))
                 .sorted((a, b) -> Double.compare(b.getValue(), a.getValue())) // mayor similitud primero
                 .limit(5)
+                //TODO QUITAR LOS PORCENTAJES MAYBE
                 .map(e -> String.format("🎮 %s (%.0f%% similitud)", e.getKey(), e.getValue() * 100))
                 .collect(Collectors.toList());
     }
