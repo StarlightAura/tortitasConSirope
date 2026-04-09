@@ -1,5 +1,6 @@
 package org.tortitas.tfg.mysql.login.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class AuthController {
     private final AuthService service;
 
     @PostMapping("/register")
-    public ResponseEntity<TokenResponse> register (@RequestBody final RegisterRequest request){
+    public ResponseEntity<TokenResponse> register (@Valid @RequestBody final RegisterRequest request){
         final TokenResponse token = service.register(request);
         return ResponseEntity.ok(token);
     }
