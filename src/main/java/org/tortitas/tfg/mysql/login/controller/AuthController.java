@@ -9,19 +9,19 @@ import org.tortitas.tfg.mysql.login.service.AuthService;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService service;
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<TokenResponse> register (@Valid @RequestBody final RegisterRequest request){
         final TokenResponse token = service.register(request);
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<TokenResponse> authenticate(@RequestBody final LoginRequest request){
         final TokenResponse token = service.login(request);
         return ResponseEntity.ok(token);
