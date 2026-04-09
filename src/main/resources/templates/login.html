@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🎪 SIROPE GAMES - ACCESO AL VACÍO 🎪</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Jua&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dc-red: #FF003F;
+            --dc-blue: #0055FF;
+            --dc-yellow: #FFE600;
+            --dc-purple: #9D00FF;
+            --dc-cyan: #00FFFF;
+            --font-title: 'Bangers', cursive;
+            --font-body: 'Jua', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: url('data:image/png;base64,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') 18 16, auto !important;
+        }
+
+        body {
+            background-color: #FECE00;
+            background-image:
+                    linear-gradient(30deg, #3DCC3A 12%, transparent 12.5%, transparent 87%, #3DCC3A 87.5%, #3DCC3A),
+                    linear-gradient(150deg, #3DCC3A 12%, transparent 12.5%, transparent 87%, #3DCC3A 87.5%, #3DCC3A),
+                    linear-gradient(30deg, #3DCC3A 12%, transparent 12.5%, transparent 87%, #3DCC3A 87.5%, #3DCC3A),
+                    linear-gradient(150deg, #3DCC3A 12%, transparent 12.5%, transparent 87%, #3DCC3A 87.5%, #3DCC3A),
+                    linear-gradient(60deg, #0A63F8 25%, transparent 25.5%, transparent 75%, #0A63F8 75.5%, #0A63F8),
+                    linear-gradient(60deg, #FE3A2F 25%, transparent 25.5%, transparent 75%, #FE3A2F 75.5%, #FE3A2F);
+            background-size: 80px 140px;
+            background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-body);
+            padding: 20px;
+        }
+
+        /*tarjeta del login*/
+        .card {
+            background: rgba(0, 17, 51, 0.9);
+            backdrop-filter: blur(10px);
+            border: 8px solid white;
+            border-radius: 40px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.4);
+            text-align: center;
+            position: relative;
+            animation: floatY 4s ease-in-out infinite;
+        }
+
+        .card::before {
+            content: '🎭';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 4rem;
+            filter: drop-shadow(0 5px 0 rgba(0,0,0,0.3));
+        }
+
+        h1 {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            color: var(--dc-yellow);
+            text-shadow: 4px 4px 0 var(--dc-red), -2px -2px 0 var(--dc-blue);
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            color: var(--dc-cyan);
+            text-transform: uppercase;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        /*alertas*/
+        .alert {
+            font-family: var(--font-title);
+            padding: 12px;
+            border-radius: 15px;
+            border: 3px solid white;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .alert-error {
+            background: var(--dc-red);
+            color: white;
+            animation: shake 0.3s infinite;
+        }
+        .alert-success {
+            background: var(--dc-cyan);
+            color: black;
+        }
+
+        /*form*/
+        label {
+            display: block;
+            text-align: left;
+            margin-left: 20px;
+            margin-bottom: 5px;
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            background: var(--dc-yellow);
+            border: 5px solid white;
+            border-radius: 50px;
+            padding: 15px 20px;
+            color: black;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            outline: none;
+            box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        input:focus {
+            background: white;
+            transform: scale(1.02);
+            border-color: var(--dc-cyan);
+        }
+
+        /*botones*/
+        .btn {
+            font-family: var(--font-title);
+            width: 100%;
+            padding: 15px;
+            border-radius: 50px;
+            border: 5px solid white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.1s;
+            color: white;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            margin-bottom: 15px;
+        }
+
+        .btn-primary {
+            background: var(--dc-red);
+            box-shadow: 0 8px 0 #990026;
+        }
+
+        .btn-secondary {
+            background: var(--dc-purple);
+            box-shadow: 0 8px 0 #6600cc;
+            font-size: 1.2rem;
+        }
+
+        .btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 rgba(0,0,0,0.5);
+        }
+
+        .divider {
+            margin: 20px 0;
+            color: var(--dc-cyan);
+            font-family: var(--font-title);
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        /*animaciones*/
+        @keyframes floatY {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(2px); }
+            50% { transform: translateX(-2px); }
+            100% { transform: translateX(2px); }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>SIROPE GAMES</h1>
+    <p class="subtitle">¡No te abstraigas todavía!</p>
+
+    <div class="alert alert-error" th:if="${error}" th:text="${error}">⚠️ ERROR EXISTENCIAL ⚠️</div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}">✅ ENTRADA CONCEDIDA ✅</div>
+
+    <form action="/web/signin" method="post">
+        <label>Sujeto</label>
+        <input type="text" name="nombreUser" placeholder="Nombre de usuario..." required/>
+
+        <label>Código Secreto</label>
+        <input type="password" name="password" placeholder="Contraseña..." required/>
+
+        <button type="submit" class="btn btn-primary">¡ENTRAR AL SHOW!</button>
+    </form>
+
+    <div class="divider">--- ¿NUEVA ENTIDAD? ---</div>
+
+    <form action="/web/signup" method="post">
+        <div style="display: flex; gap: 10px;">
+            <input type="text" name="nombreUser" placeholder="Usuario" required/>
+            <input type="password" name="password" placeholder="Clave" required/>
+        </div>
+        <button type="submit" class="btn btn-secondary">REGISTRAR EN EL SISTEMA</button>
+    </form>
+</div>
+
+</body>
+</html>
