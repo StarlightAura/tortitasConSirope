@@ -2,9 +2,10 @@ package org.tortitas.tfg.mysql.login.service;
 
 import org.springframework.stereotype.Service;
 
-import org.tfg.api.mysql.login.dto.UserResponseDTO;
+
 
 import org.tortitas.tfg.mysql.login.Exception.UserNotFoundException;
+import org.tortitas.tfg.mysql.login.dto.UserResponseDTO;
 import org.tortitas.tfg.mysql.login.mapper.UserMapper;
 import org.tortitas.tfg.mysql.login.model.User;
 import org.tortitas.tfg.mysql.login.repository.UserRepository;
