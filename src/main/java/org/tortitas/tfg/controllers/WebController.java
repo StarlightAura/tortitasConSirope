@@ -127,7 +127,8 @@ public class WebController {
 
     //===========================================================================================================
 
-    @PostMapping("/web/products") //no funciona bien
+    //TODO solo pueden insertar los admin
+    @PostMapping("/web/products") //no puse un if por si existe el juego
     public String insertarJuego(@RequestParam int sid,
                                 @RequestParam String name,
                                 @RequestParam(required = false, defaultValue = "") String description,
