@@ -344,50 +344,44 @@
 
         <div th:if="${recomendaciones}" style="margin-top: 25px;">
             <p class="results-header">Tus próximas aventuras:</p>
-            <div th:each="rec : ${recomendaciones}" class="result-item"
-                 th:text="${rec}">
+            <div th:each="rec : ${recomendaciones}" class="result-item" th:text="${rec}">
                 Muestra de Juego Digital #1
             </div>
         </div>
     </div>
 
+    <div th:if="${rol == 'ADMIN'}">
     <p class="section-title">➕ <span style="color:var(--dc-red)">Añadir</span> Nuevo Integrante</p>
     <div class="card">
+        <div class="alert alert-error" th:if="${errorInsert != null}" th:text="${errorInsert}">ERROR EXISTENCIAL</div>
+        <div class="alert alert-success" th:if="${successInsert != null}" th:text="${successInsert}">YIPPIEEE</div>
+        <div class="alert alert-error" th:if="${errorRol != null}" th:text="${errorRol}">¿PERO TÚ QUIÉN ERES?</div>
 
-        <div th:if="${errorInsert}" class="alert alert-error">⚠️¡ERROR!⚠️</div>
-        <div th:if="${successInsert}" class="alert alert-success">✅¡COMPLETADO!✅</div>
-
-        <button class="btn btn-secondary"
-                style="width: 100%;"
+        <button class="btn btn-secondary" style="width: 100%;"
                 onclick="document.getElementById('insert-form').classList.toggle('visible')">
             --- ABRIR PANEL DE CONTROL ---
         </button>
 
-        <div id="insert-form">
+        <div id="insert-form" th:classappend="${(successInsert != null) or (errorInsert != null) or (errorRol != null)} ? 'visible' : ''">
             <form action="/web/products" method="post">
-
                 <div class="form-grid">
                     <input type="number" name="sid" placeholder="ID Digital (sid) *" required/>
                     <input type="text"   name="name" placeholder="Nombre del juego *" required/>
                 </div>
-
                 <div class="form-grid">
                     <input type="text" name="genres" placeholder="Género (RPG, Caos…)"/>
                     <input type="text" name="tags" placeholder="Etiquetas (Miedo, Risa…)"/>
                 </div>
-
                 <div class="form-full">
-                    <textarea name="description"
-                              placeholder="Describe la aventura del juego..."></textarea>
+                    <textarea name="description" placeholder="Describe la aventura del juego..."></textarea>
                 </div>
-
                 <button type="submit" class="btn btn-primary" style="margin-top:15px; width:100%; background:var(--dc-purple); box-shadow: 0 8px 0 #6600cc;">
                     CONVERTIR EN INTEGRANTE DE SIROPE GAMES
                 </button>
             </form>
         </div>
     </div>
-
+</div>
 </div>
 </body>
 </html>
