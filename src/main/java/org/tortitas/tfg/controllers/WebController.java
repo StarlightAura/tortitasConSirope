@@ -1,32 +1,37 @@
 package org.tortitas.tfg.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.jose4j.lang.JoseException;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.tortitas.tfg.dto.CreateUserDTO;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.repositories.UserRepository;
 import org.tortitas.tfg.services.GameService;
+import org.tortitas.tfg.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 public class WebController {
 
-    @Autowired private GameService gameService;
-    @Autowired private JWTToken jwtToken;
-    @Autowired private UserRepository userRepository;
-    @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private GameRepository gameRepository;
-    @Autowired private OllamaEmbeddingModel ollamaEmbeddingModel;
+    private final GameService gameService;
+    private final JWTToken jwtToken;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final GameRepository gameRepository;
+    private final OllamaEmbeddingModel ollamaEmbeddingModel;
+
+    private final UserService userService;
 
     //===========================================================================================================
 
@@ -60,16 +65,16 @@ public class WebController {
     public String signup(@RequestParam String nombreUser,
                          @RequestParam String password,
                          Model model) {
-        if (userRepository.findByNombreUser(nombreUser).isPresent()) { //si se mete un usuario existente te da error y vuelves a empezar
-            model.addAttribute("error", "El usuario ya existe");
+
+        try {
+            CreateUserDTO dto = new CreateUserDTO(nombreUser, password);
+            userService.create(dto);
+            model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
+            return "login";
+        } catch (IllegalStateException e) {
+            model.addAttribute("Error", e.getMessage());
             return "login";
         }
-        User user = new User();
-        user.setNombreUser(nombreUser); //nuevo user
-        user.setPassword(passwordEncoder.encode(password)); //se cifra la pass en hash
-        userRepository.save(user); //guardamos
-        model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
-        return "login";
     }
 
     //===========================================================================================================
@@ -179,3 +184,13 @@ public class WebController {
         return "home";
     }
 }
+
+
+
+/*
+*
+* Versión anterior del singUp
+*
+*
+*
+* */
