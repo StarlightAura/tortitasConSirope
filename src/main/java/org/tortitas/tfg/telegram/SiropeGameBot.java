@@ -6,7 +6,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -15,21 +14,19 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.tortitas.tfg.models.JWTToken;
-import org.tortitas.tfg.models.User;
-import org.tortitas.tfg.repositories.UserRepo;
+import org.tortitas.tfg.repositories.UserRepository;
 import org.tortitas.tfg.services.GameService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 @Component
 public class SiropeGameBot extends TelegramLongPollingBot {
 
     @Autowired private GameService gameService;
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
     // Token JWT de cada usuario guardado por chatId
     private final Map<Long, String> tokensUsuarios = new HashMap<>();
     // Estado del flujo de registro/login
@@ -100,7 +97,7 @@ public class SiropeGameBot extends TelegramLongPollingBot {
         switch (estado) {
             case "registro_usuario":
                 // 👇 Comprueba si existe ANTES de pedir contraseña
-                if (userRepo.findByNombreUser(texto).isPresent()) {
+                if (userRepository.findByNombreUser(texto).isPresent()) {
                     estadoUsuario.remove(chatId);
                     return "El usuario \"" + texto + "\" ya existe. Usa /registro para intentarlo con otro nombre.";
                 }
@@ -124,7 +121,7 @@ public class SiropeGameBot extends TelegramLongPollingBot {
                 return registrarUsuario(chatId, texto);
 
             case "login_usuario":
-                if (userRepo.findByNombreUser(texto).isEmpty()) {
+                if (userRepository.findByNombreUser(texto).isEmpty()) {
                     estadoUsuario.remove(chatId);
                     return "El usuario \"" + texto + "\" no existe. Usa /registro para crear una cuenta.";
                 }

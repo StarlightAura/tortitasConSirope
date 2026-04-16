@@ -12,7 +12,7 @@ import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.GameRepository;
-import org.tortitas.tfg.repositories.UserRepo;
+import org.tortitas.tfg.repositories.UserRepository;
 import org.tortitas.tfg.services.GameService;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class WebController {
 
     @Autowired private GameService gameService;
     @Autowired private JWTToken jwtToken;
-    @Autowired private UserRepo userRepo;
+    @Autowired private UserRepository userRepository;
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private GameRepository gameRepository;
     @Autowired private OllamaEmbeddingModel ollamaEmbeddingModel;
@@ -60,14 +60,14 @@ public class WebController {
     public String signup(@RequestParam String nombreUser,
                          @RequestParam String password,
                          Model model) {
-        if (userRepo.findByNombreUser(nombreUser).isPresent()) { //si se mete un usuario existente te da error y vuelves a empezar
+        if (userRepository.findByNombreUser(nombreUser).isPresent()) { //si se mete un usuario existente te da error y vuelves a empezar
             model.addAttribute("error", "El usuario ya existe");
             return "login";
         }
         User user = new User();
         user.setNombreUser(nombreUser); //nuevo user
         user.setPassword(passwordEncoder.encode(password)); //se cifra la pass en hash
-        userRepo.save(user); //guardamos
+        userRepository.save(user); //guardamos
         model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
         return "login";
     }
@@ -79,7 +79,7 @@ public class WebController {
                          @RequestParam String password,
                          HttpSession session,
                          Model model) throws JoseException {
-        Optional<?> userOpt = userRepo.findByNombreUser(nombreUser); //busca un user que puede o no existir
+        Optional<?> userOpt = userRepository.findByNombreUser(nombreUser); //busca un user que puede o no existir
         if (userOpt.isEmpty()) { //si no existe pa tu casa (login)
             model.addAttribute("error", "Usuario no encontrado");
             return "login";
