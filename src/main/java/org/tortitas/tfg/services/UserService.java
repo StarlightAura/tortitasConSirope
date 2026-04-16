@@ -2,6 +2,7 @@ package org.tortitas.tfg.services;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tortitas.tfg.dto.CreateUserDTO;
 import org.tortitas.tfg.dto.ResponseUserDTO;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     //CREATE
     public void create(CreateUserDTO dto){
@@ -29,6 +31,7 @@ public class UserService {
         }
 
         User user = UserMapper.toUser(dto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(user);
     }
 
