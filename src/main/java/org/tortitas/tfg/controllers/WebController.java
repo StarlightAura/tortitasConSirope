@@ -1,6 +1,7 @@
 package org.tortitas.tfg.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jose4j.lang.JoseException;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
@@ -71,10 +72,24 @@ public class WebController {
             userService.create(dto);
             model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
             return "login";
-        } catch (IllegalStateException e) {
-            model.addAttribute("Error", e.getMessage());
-            return "login";
         }
+        catch (Exception e) {
+
+            if (e instanceof IllegalArgumentException){
+                model.addAttribute("error","Formato incorrecto. "+ e.getMessage());
+                return "login";
+            }
+
+            if (e instanceof  IllegalStateException) {
+                model.addAttribute("error", "Conflicto. "+e.getMessage());
+                return "login";
+            }
+
+            model.addAttribute("error", "Error interno. " +e.getMessage());
+            return "login";
+
+        }
+
     }
 
     //===========================================================================================================
