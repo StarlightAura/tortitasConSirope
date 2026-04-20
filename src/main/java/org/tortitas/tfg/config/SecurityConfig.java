@@ -20,7 +20,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .formLogin(form -> form.disable()) //si no desactivo el fomulario que viene por defecto da error
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() //los endpoints para el log y registrarse son publicos
+                        .requestMatchers("/img/**","/api/auth/**").permitAll() //los endpoints para el log y registrarse son publicos
                         .requestMatchers("/", "/login", "/web/signin", "/web/signup").permitAll()
                         .requestMatchers("/home", "/web/**").permitAll()
 
