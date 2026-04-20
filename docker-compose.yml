@@ -18,6 +18,8 @@ services:
       - SPRING_AI_OLLAMA_BASE_URL=${OLLAMA_URL}
     depends_on:
       - games
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   games:
     container_name: games
     image: postgres
