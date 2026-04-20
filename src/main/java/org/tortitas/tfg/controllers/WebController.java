@@ -128,7 +128,6 @@ public class WebController {
 
     //===========================================================================================================
 
-    //TODO solo pueden insertar los admin
     /*Cambios:
     * 1) Lo primero seria que en vez de poner los maravillosos doscientos parametros sueltos, lo he reducido a tres
     * principalmente porque si decidieramos cambiar añadiendo o quitando algo de Game ya seria un problema (aunque espero no cambiar nada de esa clase)

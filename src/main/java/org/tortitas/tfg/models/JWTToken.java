@@ -31,7 +31,6 @@ public class JWTToken {
         claims.setNotBeforeMinutesInThePast(2);
         claims.setSubject(username);
         claims.setClaim("rol", rol.name()); //para guardar el rol de usuario en el token
-       // claims.setClaim("email", username); ¿esto pa que lo teniamos?
 
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
@@ -48,9 +47,7 @@ public class JWTToken {
         return claims.getStringClaimValue("rol"); //la idea es que segun el rol, muestre lo de insertar juego o no en el controlador
     }
 
-
     // metodo privado aux para no repetir el codigo de validacion
-    // aqui se explica mejor -> https://www.arquitecturajava.com/el-principio-dry-y-la-encapsulacion/
     private JwtClaims getClaims(String token) throws Exception {
         JwtConsumer jwtConsumer = new JwtConsumerBuilder()
                 .setRequireExpirationTime()
@@ -66,7 +63,6 @@ public class JWTToken {
 
     public boolean isTokenValid(String token) {
         try {
-            //aqui solo he cambiado que en vez de ser  validateTokenAndGetUsername(token) sea el nuevo
             getClaims(token);
             return true;
         } catch (Exception e) {
@@ -75,29 +71,9 @@ public class JWTToken {
     }
 
     /*
-
-    URL DEL SITIO POR SI QUEREIS REVISAR: https://www.descope.com/learn/post/jwt-claims
-    EXTRA QUIZA INTERESANTE: https://www.baeldung.com/spring-security-thymeleaf
-
-    public String validateTokenAndGetUsername(String token) throws Exception {
-        JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-                .setRequireExpirationTime()
-                .setAllowedClockSkewInSeconds(30)
-                .setRequireSubject()
-                .setExpectedIssuer("Tortitas")
-                .setExpectedAudience("Audiencia Nacional")
-                .setVerificationKey(rsaJsonWebKey.getPublicKey())
-                .build();
-
-        return jwtConsumer.processToClaims(token).getSubject();
-    }
-
-    public boolean isTokenValid(String token) {
-        try {
-            validateTokenAndGetUsername(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }*/
+    URLS CON MÁS INFO
+    https://www.descope.com/learn/post/jwt-claims
+    https://www.baeldung.com/spring-security-thymeleaf
+    aqui se explica mejor -> https://www.arquitecturajava.com/el-principio-dry-y-la-encapsulacion/
+*/
 }

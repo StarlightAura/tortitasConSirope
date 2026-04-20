@@ -24,23 +24,14 @@ import java.util.stream.IntStream;
 @SpringBootApplication
 @EnableMongoRepositories
 public class TfgApplication {
-
     @Autowired
     GameRepository gameRepository;
-
-    @Autowired
-    EmbeddingController embeddingController;
-
-    @Autowired
-    VectorStore vectorStore;
-
     @Autowired
     private GameService gameService;
 
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);
     }
-
     @Bean
     public CommandLineRunner cargarDatos() {
         return args -> {
@@ -53,51 +44,4 @@ public class TfgApplication {
         };
     }
 }
-//    public void run(String... args){
-//
-//        try{
-//            createGames();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-
-//    public void createGames() throws FileNotFoundException {
-//        Gson gson = new Gson();
-//        List<Game> games = gson.fromJson(new FileReader("/home/aura/IDEAProjects/tortitasConSirope/src/main/resources/out.json"), new TypeToken<List<Game>>() {});
-//
-//
-//
-//        for (Game game : games) {
-//            float[] embeddings = embeddingController.embed(game.game2document());
-//            //System.out.println(Arrays.toString(embeddings));
-//
-//            double[] dEmbeddings = IntStream.range(0, embeddings.length).mapToDouble(i -> embeddings[i]).toArray();
-//            List<Double> d2Embeddings = Arrays.stream(dEmbeddings).boxed().toList();
-//
-//            Vector<Double> vEmbeddings = new Vector<Double>(d2Embeddings);
-//            game.setEmbeddings(vEmbeddings);
-//
-//
-//
-//            //TODO: fix the document mess
-//            /*
-//            String insertedId;
-//
-//            try{
-//                InsertOneResult result = collection.insertOne(document);
-//                System.out.println("Inserted id: " + result.getInsertedId());
-//            } catch (MongoException me){
-//                throw new RuntimeException("Error inserting games", me);
-//            }
-//            */
-//
-//            System.out.println(game);
-//
-//            gameRepository.save(game);
-//
-//        }
-//
-//        //gameRepository.saveAll(games);
 
