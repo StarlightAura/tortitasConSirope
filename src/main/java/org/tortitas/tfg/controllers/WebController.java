@@ -103,7 +103,7 @@ public class WebController {
                     return "login";
                 }
                 case IllegalArgumentException illegalArgumentException -> {
-                    model.addAttribute("error", "Dato incorrecto. " + e.getMessage());
+                    model.addAttribute("error", "Atributo incorrecto. " + e.getMessage());
                     return "login";
                 }
                 case JoseException joseException -> {
