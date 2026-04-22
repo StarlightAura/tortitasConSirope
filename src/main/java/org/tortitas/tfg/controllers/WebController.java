@@ -9,16 +9,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.dto.UserRequestDTO;
+import org.tortitas.tfg.exception.IncorrectPasswordException;
+import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
-import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.repositories.UserRepository;
 import org.tortitas.tfg.services.GameService;
 import org.tortitas.tfg.services.AuthService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -26,8 +26,6 @@ public class WebController {
 
     private final GameService gameService;
     private final JWTToken jwtToken;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final GameRepository gameRepository;
     private final OllamaEmbeddingModel ollamaEmbeddingModel;
 
@@ -54,12 +52,12 @@ public class WebController {
     }
 
     @PostMapping("/web/signup")
-    public String signup(@RequestParam String nombreUser,
-                         @RequestParam String password,
+    public String signup(@RequestParam final String nombreUser,
+                         @RequestParam final String password,
                          Model model) {
 
         try {
-            UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
+            final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
             authService.signup(dto);
             model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
             return "login";
@@ -84,28 +82,39 @@ public class WebController {
     }
 
     @PostMapping("/web/signin")
-    public String signin(@RequestParam String nombreUser,
-                         @RequestParam String password,
+    public String signin(@RequestParam final String nombreUser,
+                         @RequestParam final String password,
                          HttpSession session,
-                         Model model) throws JoseException {
+                         Model model) {
 
+        try {
+            UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
+            final String token = authService.signin(dto);
+            session.setAttribute("token",token);
+            session.setAttribute("username", dto.getName());
+            return "redirect:/home";
+        } catch (Exception e) {
+            switch (e) {
+                case UserNotFoundException userNotFoundException -> {
+                    model.addAttribute("error", "No autorizado. " + e.getMessage());
+                    return "login";
+                }
+                case IncorrectPasswordException incorrectPasswordException -> {
+                    model.addAttribute("error", "Dato incorrecto. " + e.getMessage());
+                    return "login";
+                }
+                case JoseException joseException -> {
+                    model.addAttribute("error", "Error interno. " + e.getMessage());
+                    return "login";
+                }
+                default -> {
+                }
+            }
 
-
-        Optional<?> userOpt = userRepository.findByNombreUser(nombreUser); //busca un user que puede o no existir
-        if (userOpt.isEmpty()) { //si no existe pa tu casa (login)
-            model.addAttribute("error", "Usuario no encontrado");
+            model.addAttribute("error", "Error interno. " +e.getMessage());
             return "login";
+
         }
-        User user =
-                (User) userOpt.get();
-        if (!passwordEncoder.matches(password, user.getPassword())) { //comprueba contraseña y lo mismo que con el user
-            model.addAttribute("error", "Contraseña incorrecta");
-            return "login";
-        }
-        String token = jwtToken.generateToken(nombreUser); //crea el jwt del usuario
-        session.setAttribute("token", token); //se guarda el token
-        session.setAttribute("username", nombreUser); //se guarda el nombre
-        return "redirect:/home";
     }
 
     @GetMapping("/web/logout")

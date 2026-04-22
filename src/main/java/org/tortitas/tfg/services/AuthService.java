@@ -2,12 +2,16 @@ package org.tortitas.tfg.services;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.jose4j.lang.JoseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tortitas.tfg.dto.UserRequestDTO;
 import org.tortitas.tfg.dto.ResponseUserDTO;
 import org.tortitas.tfg.dto.UpdateUserPasswordDTO;
+import org.tortitas.tfg.exception.IncorrectPasswordException;
+import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.mapper.UserMapper;
+import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.UserRepository;
 
@@ -18,6 +22,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthService {
 
+    private final JWTToken jwtToken;
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
@@ -35,23 +40,30 @@ public class AuthService {
         repository.save(user);
     }
 
-    //REGISTRY
-    public void signin(){
+    //Login
+    public String signin(UserRequestDTO dto) throws JoseException {
 
+        final User user = findByNameInternal(dto.getName());
+
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
+            throw new IncorrectPasswordException("Incorrect password.");
+        }
+
+        return jwtToken.generateToken(user.getNombreUser());
     }
 
     //READ
     public ResponseUserDTO findByName(String name){
         User user = repository
                 .findByNombreUser(name)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         return UserMapper.toDto(user);
     }
 
     public User findByNameInternal(String name){
         return repository
                 .findByNombreUser(name)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public List<User> allUsersInternal(){
