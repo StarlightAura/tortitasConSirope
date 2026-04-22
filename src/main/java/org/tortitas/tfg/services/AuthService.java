@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class UserService {
+public class AuthService {
 
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;

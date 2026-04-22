@@ -1,7 +1,6 @@
 package org.tortitas.tfg.controllers;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.jose4j.lang.JoseException;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
@@ -16,7 +15,7 @@ import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.repositories.UserRepository;
 import org.tortitas.tfg.services.GameService;
-import org.tortitas.tfg.services.UserService;
+import org.tortitas.tfg.services.AuthService;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +31,7 @@ public class WebController {
     private final GameRepository gameRepository;
     private final OllamaEmbeddingModel ollamaEmbeddingModel;
 
-    private final UserService userService;
-
-    //===========================================================================================================
+    private final AuthService authService;
 
     @GetMapping("/")
     public String index(HttpSession session) {
@@ -43,15 +40,11 @@ public class WebController {
         return "redirect:/login"; //sino te logeas
     }
 
-    //===========================================================================================================
-
     @GetMapping("/login")
     public String loginPage(HttpSession session) {
         if (session.getAttribute("token") != null) return "redirect:/home"; //si ya estas logeado pues al home
         return "login"; //sino te logeas
     }
-
-    //===========================================================================================================
 
     @GetMapping("/home")
     public String homePage(HttpSession session, Model model) {
@@ -60,8 +53,6 @@ public class WebController {
         return "home";
     }
 
-    //===========================================================================================================
-
     @PostMapping("/web/signup")
     public String signup(@RequestParam String nombreUser,
                          @RequestParam String password,
@@ -69,7 +60,7 @@ public class WebController {
 
         try {
             CreateUserDTO dto = new CreateUserDTO(nombreUser, password);
-            userService.create(dto);
+            authService.create(dto);
             model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
             return "login";
         }
@@ -92,13 +83,12 @@ public class WebController {
 
     }
 
-    //===========================================================================================================
-
     @PostMapping("/web/signin")
     public String signin(@RequestParam String nombreUser,
                          @RequestParam String password,
                          HttpSession session,
                          Model model) throws JoseException {
+
         Optional<?> userOpt = userRepository.findByNombreUser(nombreUser); //busca un user que puede o no existir
         if (userOpt.isEmpty()) { //si no existe pa tu casa (login)
             model.addAttribute("error", "Usuario no encontrado");
@@ -116,15 +106,11 @@ public class WebController {
         return "redirect:/home";
     }
 
-    //===========================================================================================================
-
     @GetMapping("/web/logout")
     public String logout(HttpSession session) {
         session.invalidate(); //borra token y user
         return "redirect:/login"; //vuelves al login
     }
-
-    //===========================================================================================================
 
     @GetMapping("/web/recommendations")
     public String recomendar(@RequestParam String product,
@@ -145,9 +131,6 @@ public class WebController {
         return "home";
     }
 
-    //===========================================================================================================
-
-    //TODO solo pueden insertar los admin
     @PostMapping("/web/products") //no puse un if por si existe el juego
     public String insertarJuego(@RequestParam int sid,
                                 @RequestParam String name,
