@@ -86,7 +86,6 @@ public class WebController {
                          @RequestParam final String password,
                          HttpSession session,
                          Model model) {
-
         try {
             UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
             final String token = authService.signin(dto);
@@ -103,6 +102,10 @@ public class WebController {
                     model.addAttribute("error", "Dato incorrecto. " + e.getMessage());
                     return "login";
                 }
+                case IllegalArgumentException illegalArgumentException -> {
+                    model.addAttribute("error", "Dato incorrecto. " + e.getMessage());
+                    return "login";
+                }
                 case JoseException joseException -> {
                     model.addAttribute("error", "Error interno. " + e.getMessage());
                     return "login";
@@ -110,10 +113,8 @@ public class WebController {
                 default -> {
                 }
             }
-
             model.addAttribute("error", "Error interno. " +e.getMessage());
             return "login";
-
         }
     }
 
