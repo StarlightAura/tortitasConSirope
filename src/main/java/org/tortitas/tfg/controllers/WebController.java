@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.tortitas.tfg.dto.CreateUserDTO;
+import org.tortitas.tfg.dto.UserRequestDTO;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
@@ -59,8 +59,8 @@ public class WebController {
                          Model model) {
 
         try {
-            CreateUserDTO dto = new CreateUserDTO(nombreUser, password);
-            authService.create(dto);
+            UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
+            authService.signup(dto);
             model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
             return "login";
         }
@@ -88,6 +88,8 @@ public class WebController {
                          @RequestParam String password,
                          HttpSession session,
                          Model model) throws JoseException {
+
+
 
         Optional<?> userOpt = userRepository.findByNombreUser(nombreUser); //busca un user que puede o no existir
         if (userOpt.isEmpty()) { //si no existe pa tu casa (login)

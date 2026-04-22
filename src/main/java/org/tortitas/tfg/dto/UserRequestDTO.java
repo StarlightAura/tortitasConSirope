@@ -3,12 +3,12 @@ package org.tortitas.tfg.dto;
 import lombok.Getter;
 
 @Getter
-public class CreateUserDTO {
+public class UserRequestDTO {
     private final String name;
     private final String password;
     private final String REGEXP = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@$!%*?&]).{8,}$";
 
-    public CreateUserDTO(String name, String password){
+    public UserRequestDTO(String name, String password){
         if (name.length()<2){
             throw new IllegalArgumentException("Nombre de usuario demasiado corto");
         }

@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.tortitas.tfg.dto.CreateUserDTO;
+import org.tortitas.tfg.dto.UserRequestDTO;
 import org.tortitas.tfg.dto.ResponseUserDTO;
 import org.tortitas.tfg.dto.UpdateUserPasswordDTO;
 import org.tortitas.tfg.mapper.UserMapper;
@@ -22,7 +22,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     //CREATE
-    public void create(CreateUserDTO dto){
+    public void signup(UserRequestDTO dto){
 
         Optional<User> optionalUser = repository.findByNombreUser(dto.getName());
 
@@ -33,6 +33,11 @@ public class AuthService {
         User user = UserMapper.toUser(dto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(user);
+    }
+
+    //REGISTRY
+    public void signin(){
+
     }
 
     //READ
