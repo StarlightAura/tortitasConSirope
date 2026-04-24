@@ -100,6 +100,7 @@ public class WebController {
     public String recomendar(@RequestParam String product,
                              HttpSession session,
                              Model model) {
+
         if (session.getAttribute("token") == null) return "redirect:/login"; //si no hay sesion, pa tu casa
 
         String token = (String) session.getAttribute("token");
@@ -112,6 +113,7 @@ public class WebController {
         model.addAttribute("recomendaciones", recomendaciones); //envia los datos al html
         model.addAttribute("query", product); //guarda la busqueda
         model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("rol", session.getAttribute("rol"));
         return "home";
     }
 

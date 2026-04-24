@@ -10,18 +10,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "Usuarios")
+
+@Entity()
+@Table(name = "Usuarios")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer chatId;
 
-    @Column(unique = true, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String nombreUser;
 
     @Column(nullable = false)
     private String password;
 
-    /*@Column(nullable = false)
-    private String role;*/
+    @Builder.Default
+    @Column(length = 10)
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 }

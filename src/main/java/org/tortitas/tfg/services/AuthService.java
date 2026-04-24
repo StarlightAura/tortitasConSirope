@@ -26,7 +26,7 @@ public class AuthService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
-    //CREATE
+    //Registry
     public void signup(UserRequestDTO dto){
 
         Optional<User> optionalUser = repository.findByNombreUser(dto.getName());
@@ -52,45 +52,12 @@ public class AuthService {
         return jwtToken.generateToken(user.getNombreUser());
     }
 
-    //READ
-    public ResponseUserDTO findByName(String name){
-        User user = repository
-                .findByNombreUser(name)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-        return UserMapper.toDto(user);
-    }
-
+    //Consult Database
     public User findByNameInternal(String name){
         return repository
                 .findByNombreUser(name)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
-    public List<User> allUsersInternal(){
-        return repository.findAll();
-    }
-
-    public List<ResponseUserDTO> allUsers(){
-        return allUsersInternal()
-                .stream()
-                .map(UserMapper::toDto)
-                .toList();
-    }
-
-    //UPDATE
-    @Transactional
-    public void updatePassword(String name,UpdateUserPasswordDTO dto){
-        User user = findByNameInternal(name);
-
-        user.setPassword(dto.getPassword());
-
-        repository.save(user);
-    }
-
-    //DELETE
-    public void delete(String name){
-        User user = findByNameInternal(name);
-        repository.delete(user);
-    }
 
 }
