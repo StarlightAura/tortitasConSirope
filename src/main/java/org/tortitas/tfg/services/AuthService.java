@@ -1,13 +1,10 @@
 package org.tortitas.tfg.services;
 
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.jose4j.lang.JoseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.tortitas.tfg.dto.UserRequestDTO;
-import org.tortitas.tfg.dto.ResponseUserDTO;
-import org.tortitas.tfg.dto.UpdateUserPasswordDTO;
 import org.tortitas.tfg.exception.IncorrectPasswordException;
 import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.mapper.UserMapper;
@@ -15,7 +12,6 @@ import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.UserRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
