@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.dto.UserRequestDTO;
+import org.tortitas.tfg.exception.AuthException;
 import org.tortitas.tfg.exception.IncorrectPasswordException;
 import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.models.Game;
@@ -30,6 +31,7 @@ public class WebController {
     private final OllamaEmbeddingModel ollamaEmbeddingModel;
 
     private final AuthService authService;
+    private final AuthException authException;
 
     @GetMapping("/")
     public String index(HttpSession session) {
@@ -55,26 +57,16 @@ public class WebController {
     public String signup(@RequestParam final String nombreUser,
                          @RequestParam final String password,
                          Model model) {
-
         try {
             final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
             authService.signup(dto);
-            model.addAttribute("success", "Usuario registrado. Ahora inicia sesión.");
+            model.addAttribute(
+                    "success",
+                    "Usuario registrado. Ahora inicia sesión.");
             return "login";
         }
         catch (Exception e) {
-
-            if (e instanceof IllegalArgumentException){
-                model.addAttribute("error","Formato incorrecto. "+ e.getMessage());
-                return "login";
-            }
-
-            if (e instanceof  IllegalStateException) {
-                model.addAttribute("error", "Conflicto. "+e.getMessage());
-                return "login";
-            }
-
-            model.addAttribute("error", "Error interno. " +e.getMessage());
+            authException.handle(model,e);
             return "login";
 
         }
@@ -93,27 +85,7 @@ public class WebController {
             session.setAttribute("username", dto.getName());
             return "redirect:/home";
         } catch (Exception e) {
-            switch (e) {
-                case UserNotFoundException userNotFoundException -> {
-                    model.addAttribute("error", "No autorizado. " + e.getMessage());
-                    return "login";
-                }
-                case IncorrectPasswordException incorrectPasswordException -> {
-                    model.addAttribute("error", "Dato incorrecto. " + e.getMessage());
-                    return "login";
-                }
-                case IllegalArgumentException illegalArgumentException -> {
-                    model.addAttribute("error", "Atributo incorrecto. " + e.getMessage());
-                    return "login";
-                }
-                case JoseException joseException -> {
-                    model.addAttribute("error", "Error interno. " + e.getMessage());
-                    return "login";
-                }
-                default -> {
-                }
-            }
-            model.addAttribute("error", "Error interno. " +e.getMessage());
+            authException.handle(model,e);
             return "login";
         }
     }
