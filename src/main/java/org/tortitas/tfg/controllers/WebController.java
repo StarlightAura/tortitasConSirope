@@ -79,7 +79,7 @@ public class WebController {
                          HttpSession session,
                          Model model) {
         try {
-            UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
+            final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
             final String token = authService.signin(dto);
             session.setAttribute("token",token);
             session.setAttribute("username", dto.getName());
