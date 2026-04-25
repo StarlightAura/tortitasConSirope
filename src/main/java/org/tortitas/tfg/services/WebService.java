@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class AuthService {
+public class WebService {
 
     private final JWTToken jwtToken;
     private final UserRepository repository;
@@ -54,6 +54,10 @@ public class AuthService {
                 .findByNombreUser(name)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+
+    //Recommendations
+
+
 
 
 }

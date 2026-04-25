@@ -2,22 +2,17 @@ package org.tortitas.tfg.controllers;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.jose4j.lang.JoseException;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.dto.UserRequestDTO;
 import org.tortitas.tfg.exception.AuthException;
-import org.tortitas.tfg.exception.IncorrectPasswordException;
-import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.repositories.GameRepository;
-import org.tortitas.tfg.repositories.UserRepository;
 import org.tortitas.tfg.services.GameService;
-import org.tortitas.tfg.services.AuthService;
+import org.tortitas.tfg.services.WebService;
 
 import java.util.List;
 
@@ -30,8 +25,9 @@ public class WebController {
     private final GameRepository gameRepository;
     private final OllamaEmbeddingModel ollamaEmbeddingModel;
 
-    private final AuthService authService;
+    private final WebService webService;
     private final AuthException authException;
+
 
     @GetMapping("/")
     public String index(HttpSession session) {
@@ -59,7 +55,7 @@ public class WebController {
                          Model model) {
         try {
             final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
-            authService.signup(dto);
+            webService.signup(dto);
             model.addAttribute(
                     "success",
                     "Usuario registrado. Ahora inicia sesión.");
@@ -80,7 +76,7 @@ public class WebController {
                          Model model) {
         try {
             final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
-            final String token = authService.signin(dto);
+            final String token = webService.signin(dto);
             session.setAttribute("token",token);
             session.setAttribute("username", dto.getName());
             return "redirect:/home";
@@ -168,13 +164,3 @@ public class WebController {
         return "home";
     }
 }
-
-
-
-/*
-*
-* Versión anterior del singUp
-*
-*
-*
-* */
