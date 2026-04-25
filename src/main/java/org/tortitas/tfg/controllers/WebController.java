@@ -19,8 +19,6 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 public class WebController {
-
-    private final GameService gameService;
     private final JWTToken jwtToken;
     private final GameRepository gameRepository;
     private final OllamaEmbeddingModel ollamaEmbeddingModel;
