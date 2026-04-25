@@ -1,17 +1,21 @@
 package org.tortitas.tfg.services;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.jose4j.lang.JoseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.tortitas.tfg.dto.UserRequestDTO;
 import org.tortitas.tfg.exception.IncorrectPasswordException;
+import org.tortitas.tfg.exception.NoTokenPresentException;
 import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.mapper.UserMapper;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,6 +23,7 @@ import java.util.Optional;
 public class WebService {
 
     private final JWTToken jwtToken;
+    private final GameService gameService;
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
@@ -56,8 +61,29 @@ public class WebService {
     }
 
     //Recommendations
+    public Model recommendation(String game,HttpSession session, Model model) throws JoseException {
 
+        validateSesion(session);
+        String token = (String) session.getAttribute("token");
+        if (!jwtToken.isTokenValid(token)){
+            throw new JoseException("No valid token");
+        }
 
+        List<String>recommendations = gameService.recomendar(game);
+        model.addAttribute("recomendaciones", recommendations); //envia los datos al html
+        model.addAttribute("query", game); //guarda la busqueda
+        model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("rol", session.getAttribute("rol"));
+
+        return model;
+
+    }
+
+    public void validateSesion(HttpSession session){
+        if (session.getAttribute("token")==null){
+            throw new NoTokenPresentException("No token present.");
+        }
+    }
 
 
 }

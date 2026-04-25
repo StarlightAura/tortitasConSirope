@@ -1,7 +1,7 @@
 package org.tortitas.tfg.exception;
 
-public class NoTokenPresent extends IllegalArgumentException {
-    public NoTokenPresent(String message) {
+public class NoTokenPresentException extends RuntimeException {
+    public NoTokenPresentException(String message) {
         super(message);
     }
 }

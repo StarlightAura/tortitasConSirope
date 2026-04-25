@@ -24,6 +24,9 @@ public class AuthException {
             case JoseException joseException -> {
                 model.addAttribute("error", "Error de seguridad. " + ex.getMessage());
             }
+            case NoTokenPresentException noTokenPresentException -> {
+                model.addAttribute("error", "Error de seguridad. " + ex.getMessage());
+            }
             default -> {
                 model.addAttribute("error", "Error interno. " +ex.getMessage());
             }

@@ -93,24 +93,18 @@ public class WebController {
     }
 
     @GetMapping("/web/recommendations")
-    public String recomendar(@RequestParam String product,
+    public String recomendar(@RequestParam final String product,
                              HttpSession session,
                              Model model) {
 
-        if (session.getAttribute("token") == null) return "redirect:/login"; //si no hay sesion, pa tu casa
-
-        String token = (String) session.getAttribute("token");
-        if (!jwtToken.isTokenValid(token)) { //si el token no es valido, pa tu casa
+        try{
+            model = webService.recommendation(product,session,model);
+            return "home";
+        } catch (Exception e) {
+            authException.handle(model,e);
             session.invalidate();
             return "redirect:/login";
         }
-
-        List<String> recomendaciones = gameService.recomendar(product); //llama al service y nos da la lista de jueguitos
-        model.addAttribute("recomendaciones", recomendaciones); //envia los datos al html
-        model.addAttribute("query", product); //guarda la busqueda
-        model.addAttribute("username", session.getAttribute("username"));
-        model.addAttribute("rol", session.getAttribute("rol"));
-        return "home";
     }
 
     @PostMapping("/web/products") //no puse un if por si existe el juego
