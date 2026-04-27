@@ -6,27 +6,28 @@ services:
     ports:
       - 8787:8787
     environment:
-      - DATABASE_URL=jdbc:postgresql://games:5432/postgres
-      - DATABASE_USERNAME=postgres
-      - DATABASE_PASSWORD=postgres
-      - SPRING_MONGODB_URI=mongodb+srv://lauramm_db_user:siropeGames@pruebamongo.sd54xkt.mongodb.net/?appName=PruebaMongo
-      - TELEGRAM_BOT_TOKEN=8693576752:AAF-cq5pD0jOFHYnRobtD9p8BoCy26gQLPM
-      - TELEGRAM_BOT_USERNAME=SiropeGamersBot
+      - DATABASE_URL=jdbc:postgresql://games:5432/${DB_NAME}
+      - DATABASE_USERNAME=${DB_USER}
+      - DATABASE_PASSWORD=${DB_PASSWORD}
+      - SPRING_MONGODB_URI=${MONGO_URI}
+      - SPRING_MONGO_DB=${MONGO_DB}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SERVER_PORT=8787
       - SPRING_SECURITY_USER_NAME=disable
       - SPRING_AUTOCONFIGURE_EXCLUDE=org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
-      - SPRING_AI_OLLAMA_BASE_URL=http://host.docker.internal:11434/
+      - SPRING_AI_OLLAMA_BASE_URL=${OLLAMA_URL}
     depends_on:
       - games
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   games:
     container_name: games
     image: postgres
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
       - PGDATA=/var/lib/postgresql
     restart: always

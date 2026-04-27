@@ -21,7 +21,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable) //si no desactivo el fomulario que viene por defecto da error
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() //los endpoints para el log y registrarse son publicos
+                        .requestMatchers("/img/**","/api/auth/**").permitAll() //los endpoints para el log y registrarse son publicos
                         .requestMatchers("/", "/login", "/web/signin", "/web/signup").permitAll()
                         .requestMatchers("/home", "/web/**").permitAll()
 
