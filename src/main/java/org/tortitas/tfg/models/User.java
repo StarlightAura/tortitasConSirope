@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 
-@Entity()
+@Entity
 @Table(name = "Usuarios")
 public class User {
     @Id
@@ -27,5 +27,5 @@ public class User {
     @Builder.Default
     @Column(length = 10)
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    private Rol role = Rol.USER;
 }

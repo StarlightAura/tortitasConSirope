@@ -11,10 +11,7 @@ import org.tortitas.tfg.exception.AuthException;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.repositories.GameRepository;
-import org.tortitas.tfg.services.GameService;
 import org.tortitas.tfg.services.WebService;
-
-import java.util.List;
 
 @Controller
 @AllArgsConstructor

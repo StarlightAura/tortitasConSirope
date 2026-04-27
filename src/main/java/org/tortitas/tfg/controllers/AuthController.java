@@ -37,7 +37,7 @@ public class AuthController {
         if (user.isEmpty() || !passwordEncoder.matches(creds.get("password"), user.get().getPassword())) {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
-        String token = jwtToken.generateToken(user.get().getNombreUser(), user.get().getRol());
+        String token = jwtToken.generateToken(user.get().getNombreUser(), user.get().getRole());
         return ResponseEntity.ok(Map.of("token", token));
     }
 }

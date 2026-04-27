@@ -12,13 +12,4 @@ public class UserMapper {
                 .password(dto.getPassword())
                 .build();
     }
-
-    public static ResponseUserDTO toDto(User user){
-        return new ResponseUserDTO(
-                user.getChatId(),
-                user.getNombreUser()
-        );
-    }
-
-
 }

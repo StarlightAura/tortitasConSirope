@@ -50,7 +50,7 @@ public class WebService {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
-        return jwtToken.generateToken(user.getNombreUser());
+        return jwtToken.generateToken(user.getNombreUser(), user.getRole());
     }
 
     //Consult Database
