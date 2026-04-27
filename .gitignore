@@ -14,7 +14,6 @@ target/
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.env
 .idea
 *.iws
 *.iml
@@ -33,4 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
+### SECRET ###
 .env

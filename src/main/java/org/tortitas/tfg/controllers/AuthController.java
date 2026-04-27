@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.models.User;
-import org.tortitas.tfg.repositories.UserRepo;
+import org.tortitas.tfg.repositories.UserRepository;
 
 import java.util.Map;
 import java.util.Optional;
@@ -16,16 +16,16 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired private UserRepo userRepo;
+    @Autowired private UserRepository userRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
-        if (userRepo.findByNombreUser(user.getNombreUser()).isPresent()) {
+        if (userRepository.findByNombreUser(user.getNombreUser()).isPresent()) {
             return ResponseEntity.badRequest().body("Usuario ya existe");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepo.save(user);
+        userRepository.save(user);
         return ResponseEntity.ok("Usuario registrado correctamente");
     }
 
@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody Map<String, String> creds) throws JoseException {
-        Optional<User> user = userRepo.findByNombreUser(creds.get("nombreUser"));
+        Optional<User> user = userRepository.findByNombreUser(creds.get("nombreUser"));
         if (user.isEmpty() || !passwordEncoder.matches(creds.get("password"), user.get().getPassword())) {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
