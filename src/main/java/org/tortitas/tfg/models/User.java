@@ -22,4 +22,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Builder.Default //esto es para que no se quede a null si no se especifica el rol y se ponga en user
+    private Rol rol = Rol.USER;
 }
