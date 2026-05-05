@@ -1,7 +1,6 @@
 package org.tortitas.tfg.mapper;
 
 import org.tortitas.tfg.dto.UserRequestDTO;
-import org.tortitas.tfg.dto.ResponseUserDTO;
 import org.tortitas.tfg.models.User;
 
 public class UserMapper {

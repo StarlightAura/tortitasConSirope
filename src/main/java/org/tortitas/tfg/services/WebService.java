@@ -42,7 +42,7 @@ public class WebService {
     }
 
     //Login
-    public String signin(UserRequestDTO dto, HttpSession session) throws JoseException {
+    public HttpSession signin(UserRequestDTO dto, HttpSession session) throws JoseException {
 
         final User user = findByNameInternal(dto.getName());
 
@@ -50,7 +50,13 @@ public class WebService {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
-        return jwtToken.generateToken(user.getNombreUser(), user.getRole());
+        final String token = jwtToken.generateToken(user.getNombreUser(), user.getRole());
+
+        session.setAttribute("token", token);
+        session.setAttribute("username", user.getNombreUser());
+        session.setAttribute("rol", user.getRole().name());
+
+        return session;
     }
 
     //Consult Database
