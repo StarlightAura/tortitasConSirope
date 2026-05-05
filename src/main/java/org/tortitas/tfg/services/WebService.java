@@ -42,7 +42,7 @@ public class WebService {
     }
 
     //Login
-    public String signin(UserRequestDTO dto) throws JoseException {
+    public String signin(UserRequestDTO dto, HttpSession session) throws JoseException {
 
         final User user = findByNameInternal(dto.getName());
 

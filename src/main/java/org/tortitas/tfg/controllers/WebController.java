@@ -71,9 +71,7 @@ public class WebController {
                          Model model) {
         try {
             final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
-            final String token = webService.signin(dto);
-            session.setAttribute("token",token);
-            session.setAttribute("username", dto.getName());
+            webService.signin(dto, session);
             return "redirect:/home";
         } catch (Exception e) {
             authException.handle(model,e);
