@@ -43,6 +43,7 @@ public class WebService {
 
     //Login
     public HttpSession signin(UserRequestDTO dto, HttpSession session) throws JoseException {
+
         final User user = findByNameInternal(dto.getName());
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
@@ -53,7 +54,7 @@ public class WebService {
 
         session.setAttribute("token", token);
         session.setAttribute("username", user.getNombreUser());
-        session.setAttribute("rol", user.getRole().name());
+        session.setAttribute("role", user.getRole().name());
 
         return session;
     }

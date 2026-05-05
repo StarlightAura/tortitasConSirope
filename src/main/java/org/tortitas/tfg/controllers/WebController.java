@@ -45,8 +45,8 @@ public class WebController {
     }
 
     @PostMapping("/web/signup")
-    public String signup(@RequestParam final String nombreUser,
-                         @RequestParam final String password,
+    public String signup(@RequestParam String nombreUser,
+                         @RequestParam String password,
                          Model model) {
         try {
             final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
@@ -65,10 +65,8 @@ public class WebController {
     }
 
     @PostMapping("/web/signin")
-    public String signin(@RequestParam final String nombreUser,
-                         @RequestParam final String password,
-                         HttpSession session,
-                         Model model) {
+    public String signin(@RequestParam String nombreUser, @RequestParam String password,
+                         HttpSession session, Model model) {
         try {
             final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
             webService.signin(dto, session);
@@ -86,7 +84,7 @@ public class WebController {
     }
 
     @GetMapping("/web/recommendations")
-    public String recomendar(@RequestParam final String product,
+    public String recomendar(@RequestParam String product,
                              HttpSession session,
                              Model model) {
 
