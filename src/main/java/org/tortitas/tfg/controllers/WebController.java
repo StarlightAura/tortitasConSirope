@@ -13,6 +13,8 @@ import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.services.WebService;
 
+import java.util.Vector;
+
 @Controller
 @AllArgsConstructor
 public class WebController {
@@ -99,19 +101,7 @@ public class WebController {
     }
 
     @PostMapping("/web/products") //no puse un if por si existe el juego
-    public String insertarJuego(@RequestParam int sid,
-                                @RequestParam String name,
-                                @RequestParam(required = false, defaultValue = "") String description,
-                                @RequestParam(required = false, defaultValue = "") String genres,
-                                @RequestParam(required = false, defaultValue = "") String tags,
-                                @RequestParam(required = false, defaultValue = "") String developers,
-                                @RequestParam(required = false, defaultValue = "") String published_store,
-                                @RequestParam(required = false, defaultValue = "0") int full_price,
-                                @RequestParam(required = false, defaultValue = "0") int store_uscore,
-                                @RequestParam(required = false, defaultValue = "") String languages,
-                                @RequestParam(required = false, defaultValue = "") String store_url,
-                                HttpSession session,
-                                Model model) {
+    public String insertarJuego(Game juego, HttpSession session, Model model) {
         if (session.getAttribute("token") == null) return "redirect:/login"; //comprueba sesion y valida el token
 
         String token = (String) session.getAttribute("token");
@@ -120,32 +110,30 @@ public class WebController {
             return "redirect:/login";
         }
 
+        String rol = (String) session.getAttribute("rol");
+        if (!"ADMIN".equals(rol)) {
+            model.addAttribute("errorRol", "¿Pero tú quién eres?");
+            return "home";
+        }
+
         try {
-            Game juego = new Game();
-            juego.sid = sid;
-            juego.name = name;
-            juego.description = description;
-            juego.genres = genres;
-            juego.tags = tags;
-            juego.developers = developers;
-            juego.published_store = published_store;
-            juego.full_price = full_price;
-            juego.store_uscore = store_uscore;
-            juego.languages = languages;
-            juego.store_url = store_url;
+            if (gameRepository.existsById(juego.sid)) {
+                model.addAttribute("errorInsert", "El ID " + juego.sid + " ya existe. ¡No podemos duplicar la realidad!");
+            } else {
+                float[] vector = ollamaEmbeddingModel.embed(juego.game2document()); //convierte el juego a texto para que ollama lo vectorice
+                Vector<Double> embeddings = new Vector<>();
+                for (float v : vector) embeddings.add((double) v); //conversion de float a vector
+                juego.embeddings = embeddings; //se guarda el vector en el objeto jueguito
+                gameRepository.save(juego); //y se inserta en la bbdd
 
-            float[] vector = ollamaEmbeddingModel.embed(juego.game2document()); //convierte el juego a texto para que ollama lo vectorice
-            java.util.Vector<Double> embeddings = new java.util.Vector<>();
-            for (float v : vector) embeddings.add((double) v); //conversion de float a vector
-            juego.embeddings = embeddings; //se guarda el vector en el objeto jueguito
-            gameRepository.save(juego); //y se inserta en la bbdd
-
-            model.addAttribute("successInsert", "Juego \"" + name + "\" insertado y vectorizado ✅");
+                model.addAttribute("successInsert", "Juego \"" + juego.name + "\" insertado y vectorizado 🗿");
+            }
         } catch (Exception e) {
             model.addAttribute("errorInsert", "Error al insertar: " + e.getMessage());
         }
 
         model.addAttribute("username", session.getAttribute("username"));
+        model.addAttribute("rol", rol);
         return "home";
     }
 }

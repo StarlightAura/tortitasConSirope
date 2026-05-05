@@ -41,10 +41,10 @@ public class Game {
         */
         String juegosContent = String.format(
                 /*Por alguna razón, la ia en general, no entiende el contexto de algunas cosas si no
-                * vas con ella de la manita, me explico, el nombre y la descripcion lo entiende perfe,
-                * sin embargo, si no le dices explicitamente con etiquetas que son el resto de cosas
-                * se vuelve tonta y puede pensar que el genero terror es el nombre de el desarrollador por ejemplo
-                * y en resumen liarla parda*/
+                 * vas con ella de la manita, me explico, el nombre y la descripcion lo entiende perfe,
+                 * sin embargo, si no le dices explicitamente con etiquetas que son el resto de cosas
+                 * se vuelve tonta y puede pensar que el genero terror es el nombre de el desarrollador por ejemplo
+                 * y en resumen liarla parda*/
                 "%s. %s. Genres: %s. Tags: %s. Developers: %s",
                 this.name, this.description, this.genres, this.tags, this.developers
         );
