@@ -54,7 +54,7 @@ public class WebService {
 
         session.setAttribute("token", token);
         session.setAttribute("username", user.getNombreUser());
-        session.setAttribute("role", user.getRole());
+        session.setAttribute("rol", user.getRole());
 
         return session;
     }
