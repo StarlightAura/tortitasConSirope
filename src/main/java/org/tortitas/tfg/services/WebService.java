@@ -43,7 +43,6 @@ public class WebService {
 
     //Login
     public HttpSession signin(UserRequestDTO dto, HttpSession session) throws JoseException {
-
         final User user = findByNameInternal(dto.getName());
 
         if (!passwordEncoder.matches(dto.getPassword(), user.getPassword())){
