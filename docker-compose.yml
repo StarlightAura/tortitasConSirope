@@ -31,3 +31,11 @@ services:
       - POSTGRES_DB=${DB_NAME}
       - PGDATA=/var/lib/postgresql
     restart: always
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - 11434:11434
+    pull_policy: always
+    tty: true
+    restart: unless-stopped

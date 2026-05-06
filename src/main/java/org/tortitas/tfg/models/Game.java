@@ -30,7 +30,6 @@ public class Game {
     public String languages;
     public String genres;
     public String tags;
-
     public Vector<Double> embeddings; //Para guardar los vectores que genera nuestra amiga Ollama
 
     // Si lo pongo sin el org me chilla por el document de mongo
