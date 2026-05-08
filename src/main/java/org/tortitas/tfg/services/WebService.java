@@ -54,10 +54,11 @@ public class WebService {
 
         session.setAttribute("token", token);
         session.setAttribute("username", user.getNombreUser());
-        session.setAttribute("rol", user.getRole());
+        session.setAttribute("rol", user.getRole().name());
 
         return session;
     }
+
 
     //Consult Database
     public User findByNameInternal(String name){
