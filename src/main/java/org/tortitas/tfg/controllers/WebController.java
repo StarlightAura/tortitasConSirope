@@ -43,6 +43,7 @@ public class WebController {
     public String homePage(HttpSession session, Model model) {
         if (session.getAttribute("token") == null) return "redirect:/login"; //mas de lo mismo, sin logearte no entras
         model.addAttribute("username", session.getAttribute("username")); //se pasa el username al thymeleaf
+        model.addAttribute("rol", session.getAttribute("rol")); //Este código me faltaba parece que se perdió al fusionar las ramas. Autor: @iris-cafe
         return "home";
     }
 
