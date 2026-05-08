@@ -25,7 +25,7 @@ public class GameController {
     @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
             @RequestParam String product,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Token requerido");
@@ -42,7 +42,7 @@ public class GameController {
     @PostMapping("/products")
     public ResponseEntity<?> insertarProducto(
             @RequestBody Game juego,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Token requerido");

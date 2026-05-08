@@ -23,7 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/img/**","/api/auth/**").permitAll() //los endpoints para el log y registrarse son publicos
                         .requestMatchers("/", "/login", "/web/signin", "/web/signup").permitAll()
                         .requestMatchers("/home", "/web/**").permitAll()
-
+                        .requestMatchers("/api/**").permitAll() //cambio necesario para los endpoint de los controller game y web
                 );
         return http.build();
     }
