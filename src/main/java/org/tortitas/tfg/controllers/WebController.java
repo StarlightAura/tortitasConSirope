@@ -16,6 +16,7 @@ import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.repositories.UserRepo;
 import org.tortitas.tfg.services.GameService;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,7 +119,7 @@ public class WebController {
             return "redirect:/login";
         }
 
-        List<String> recomendaciones = gameService.recomendar(product); //llama al service y nos da la lista de jueguitos
+        List<AbstractMap.SimpleEntry<Game, Double>> recomendaciones = gameService.recomendar(product);
         model.addAttribute("recomendaciones", recomendaciones); //envia los datos al html
         model.addAttribute("query", product); //guarda la busqueda
         model.addAttribute("username", session.getAttribute("username"));

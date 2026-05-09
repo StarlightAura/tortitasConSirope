@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameService {
-
     @Autowired
     private GameRepository gameRepository;
 
@@ -46,7 +45,26 @@ public class GameService {
     }
 
     // Esto es lo que llama el bot con la query del usuario
-    public List<String> recomendar(String query) {
+    public List<AbstractMap.SimpleEntry<Game, Double>> recomendar(String query)   {
+        // 1. Vectorizar la query
+        float[] vectorQuery = ollamaEmbeddingModel.embed(query);
+        Vector<Double> queryEmbedding = new Vector<>();
+        for (float v : vectorQuery) queryEmbedding.add((double) v);
+
+        // 2. Comparar con todos los juegos en MongoDB
+        List<Game> todos = gameRepository.findAll();
+
+        return todos.stream()
+                .filter(g -> g.embeddings != null && !g.embeddings.isEmpty())
+                .map(g -> new AbstractMap.SimpleEntry<>(
+                        g, CosineSimilarity.cosineSimilarity(queryEmbedding, g.embeddings) * 100
+                ))
+                .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
+                .limit(5)
+                .collect(Collectors.toList());
+
+       /*  // Esto es lo que llama el bot con la query del usuario
+        public List<String> recomendar(String query) {
         // 1. Vectorizar la query
         float[] vectorQuery = ollamaEmbeddingModel.embed(query);
         Vector<Double> queryEmbedding = new Vector<>();
@@ -66,5 +84,6 @@ public class GameService {
                 //TODO QUITAR LOS PORCENTAJES MAYBE
                 .map(e -> String.format("🎮 %s (%.0f%% similitud)", e.getKey(), e.getValue() * 100))
                 .collect(Collectors.toList());
+    }*/
     }
 }
