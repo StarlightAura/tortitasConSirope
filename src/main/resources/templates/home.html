@@ -5,322 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>🎪 SIROPE GAMES - DIGITAL CIRCUS 🎪</title>
     <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Jua&display=swap" rel="stylesheet">
-    <style>
-        /*Para que se puedan reutilizar los colorinchis mas facil*/
-        :root {
-            --dc-red: #FF003F;
-            --dc-blue: #0055FF;
-            --dc-yellow: #FFE600;
-            --dc-purple: #9D00FF;
-            --dc-cyan: #00FFFF;
-            --dc-bg: #001133;
-
-            /*Fuentes parecidas (pa mi lo son)*/
-            --font-title: 'Bangers', cursive; /*Estilo circo*/
-            --font-body: 'Jua', sans-serif; /*Estilo burbuja*/
-        }
-
-        * {
-            box-sizing: border-box;
-            /*eliminasao de margenes y padding que vienen por defefcto*/
-            margin: 0;
-            padding: 0;
-            /*Cursor de bubble (NO SE VE BIEN T-T)*/
-            cursor: url('data:image/png;base64,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') 18 16, auto !important;
-        }
-            body {
-                background-image: url('/img/TADC2.jpg') !important;
-                background-size: cover !important;
-                background-position: center center;
-                background-attachment: fixed;
-                background-repeat: no-repeat;
-                background-color: #FECE00;
-
-            min-height: 100vh;/*altura min de toda la pantalla*/
-            font-family: var(--font-body);
-            color: #fff;
-            padding-bottom: 50px;
-            overflow-x: hidden;
-        }
-
-        .bg-admin {
-            background-image: url('/img/despacho.png') !important;
-        }
-
-        .bg-user {
-            background-image: url('/img/TADC2.jpg') !important;
-        }
-
-        /*nav rollo cartel luminoso*/
-        nav {
-            background: var(--dc-bg);
-            border-bottom: 10px solid;
-            border-image: linear-gradient(to right, var(--dc-red), var(--dc-yellow), var(--dc-blue), var(--dc-purple)) 1;
-            padding: 15px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 0 20px rgba(0,255,255,0.5);
-        }
-        .nav-brand {
-            font-family: var(--font-title);
-            font-size: 2.5rem;
-            color: var(--dc-yellow);
-            text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue);
-            letter-spacing: 2px;
-            animation: glitch 2s infinite;
-        }
-        .nav-brand span { color: white; }
-
-        .nav-user {
-            font-size: 1.1rem;
-            color: var(--dc-cyan);
-            text-transform: uppercase;
-            margin-right: 15px;
-            animation: glitch 2s infinite;
-        }
-        .nav-logout {
-            font-family: var(--font-title);
-            background: var(--dc-red);
-            border: 4px solid white;
-            color: white;
-            padding: 8px 18px;
-            border-radius: 50px; /*Forma de pasti, pedro referencia*/
-            cursor: pointer;
-            font-size: 1.2rem;
-            text-decoration: none;
-            box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
-            transition: all 0.1s;
-        }
-        .nav-logout:hover {
-            transform: scale(1.1);
-            background: var(--dc-blue);
-            box-shadow: 0 0 15px var(--dc-cyan);
-        }
-
-        /* --- CONTENIDO PRINCIPAL --- */
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            font-family: var(--font-title);
-            font-size: 2rem;
-            color: white;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            text-shadow: 4px 4px 0 var(--dc-purple);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /*Tarjetas tipo 3d semi trans*/
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(7px);
-            border: 8px solid white;
-            border-radius: 30px;
-            padding: 30px;
-            margin-bottom: 40px;
-            /* Efecto semi trans*/
-            box-shadow:
-                    10px 10px 0px rgba(0,0,0,0.3),
-                    inset 5px 5px 10px rgba(255,255,255,0.2),
-                    inset -5px -5px 10px rgba(0,0,0,0.2);
-            position: relative;
-        }
-
-        /*Decoracion de esquina en tarjetas*/
-        .card::after {
-            content: '♚'; /*kinger my beloved*/
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            background: var(--dc-yellow);
-            color: black;
-            font-size: 2rem;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
-        }
-
-        /* Animación suave para la primera tarjeta (búsqueda) */
-        .card-search {
-            /*animation: floatY 4s ease-in-out infinite;*/
-        }
-
-        /*decoration para las posibles alerts*/
-        .alert {
-            font-family: var(--font-title);
-            padding: 15px;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            margin-bottom: 20px;
-            text-align: center;
-            border: 4px solid white;
-            text-transform: uppercase;
-        }
-        .alert-error {
-            background: var(--dc-red);
-            color: white;
-            box-shadow: 0 0 20px var(--dc-red);
-            animation: shake 0.3s infinite;
-        }
-        .alert-success {
-            background: var(--dc-cyan);
-            color: black;
-            box-shadow: 0 0 20px var(--dc-cyan);
-        }
-
-        /*inputs y botones con estilo de juguetes ma o meno*/
-        .search-row {
-            display: flex;
-            gap: 15px;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        textarea {
-            width: 100%;
-            background: var(--dc-yellow);
-            border: 5px solid white;
-            border-radius: 50px;
-            padding: 15px 20px;
-            color: black;
-            font-family: var(--font-body);
-            font-size: 1.1rem;
-            font-weight: bold;
-            outline: none;
-            box-shadow: inset 3px 3px 5px rgba(0,0,0,0.3);
-            transition: all 0.2s;
-        }
-        textarea { border-radius: 20px; resize: vertical; }
-
-        input:focus, textarea:focus {
-            background: white;
-            border-color: var(--dc-cyan);
-            box-shadow: 0 0 15px var(--dc-cyan);
-        }
-
-        /*Botones super 3D*/
-        .btn {
-            font-family: var(--font-title);
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: 5px solid white;
-            font-size: 1.4rem;
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: all 0.1s;
-            position: relative;
-            color: white;
-            text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-        }
-
-        /* Botón Primario (Rojo pomni) */
-        .btn-primary {
-            background: var(--dc-red);
-            box-shadow: 0 8px 0 #990026, 0 8px 10px rgba(0,0,0,0.5);
-        }
-        .btn-primary:hover { background: #ff3366; }
-
-        /* Botón Secundario (Azul reemplazo de caine) */
-        .btn-secondary {
-            background: var(--dc-blue);
-            box-shadow: 0 8px 0 #003399, 0 8px 10px rgba(0,0,0,0.5);
-        }
-        .btn-secondary:hover { background: #3377ff; }
-
-        /*Efecto de presionar boton*/
-        .btn:active {
-            transform: translateY(4px);
-            box-shadow: 0 4px 0 #990026, 0 4px 6px rgba(0,0,0,0.5);
-        }
-        .btn-secondary:active { box-shadow: 0 4px 0 #003399, 0 4px 6px rgba(0,0,0,0.5); }
-
-        /*resultados mal renderizados*/
-        .results-header {
-            font-size: 1.1rem;
-            color: var(--dc-cyan);
-            margin-bottom: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .result-item {
-            background: var(--dc-purple);
-            border: 4px solid var(--dc-yellow);
-            color: white;
-            border-radius: 15px;
-            padding: 15px 20px;
-            margin-bottom: 12px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            box-shadow: 5px 5px 0px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-        .result-item:hover {
-            transform: scale(1.03) rotate(1deg);
-            background: white;
-            color: black;
-            border-color: var(--dc-red);
-        }
-
-        /*forms y grid*/
-        #insert-form {
-            display: none;
-            margin-top: 25px;
-            border-top: 5px dashed white;
-            padding-top: 25px;
-        }
-        #insert-form.visible { display: block; animation: expandDown 0.5s ease; }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-        .form-full { margin-bottom: 15px; }
-
-        /*animaciones*/
-        @keyframes glitch {
-            0% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
-            14% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
-            15% { text-shadow: -5px -5px 0 var(--dc-red), 5px 5px 0 var(--dc-blue); }
-            16% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
-            100% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
-        }
-
-        @keyframes floatY {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(1deg); }
-        }
-
-        @keyframes shake {
-            0% { transform: translate(1px, 1px); }
-            50% { transform: translate(-1px, -1px); }
-            100% { transform: translate(1px, -1px); }
-        }
-
-        @keyframes expandDown {
-            0% { opacity: 0; transform: translateY(-20px) scaleY(0); }
-            100% { opacity: 1; transform: translateY(0) scaleY(1); }
-        }
-
-    </style>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
 </head>
 <body th:classappend="${rol == 'ADMIN'} ? 'bg-admin' : 'bg-user'">
+
+<!--LA VENTANITA DE CARGA-->
+<div id="loading-overlay">
+    <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <p class="loading-title">¡BUSCANDO!</p>
+        <p class="loading-subtitle">Explorando el vacío digital...</p>
+    </div>
+</div>
+
 <nav>
     <div class="nav-brand">🎪 <span>DIGITAL</span> PANCAKES 🥞</div>
-    <div style="display:flex; align-items:center;">
+    <div class="nav-actions">
         <span class="nav-user" th:text="'Sujeto: ' + ${username}">Sujeto: Pomni</span>
         <a href="/web/logout" class="nav-logout">¡ABSTRAERSE!</a>
     </div>
@@ -328,56 +28,67 @@
 
 <div class="container">
 
-    <p class="section-title">🔍 <span style="color:var(--dc-cyan)">Explorar</span> el Vacío</p>
+    <p class="section-title">🔍 <span class="title-accent-cyan">Explorar</span> el Vacío</p>
     <div class="card card-search">
         <form action="/web/recommendations" method="get" class="search-row">
             <input type="text" name="product"
                    th:value="${query}"
                    placeholder="Introduce tu proxima aventura (ej: aventura de chuches)"
                    required/>
-            <button type="submit" class="btn btn-primary">¡GENERAR!</button>
+            <button type="submit" class="btn btn-primary" id="btn-buscar">¡GENERAR!</button>
         </form>
 
-        <div th:if="${recomendaciones}" style="margin-top: 25px;">
+        <div th:if="${recomendaciones}" class="results-container">
             <p class="results-header">Tus próximas aventuras:</p>
-            <div th:each="rec : ${recomendaciones}" class="result-item" th:text="${rec}">
-                Muestra de Juego Digital #1
+            <div th:each="rec : ${recomendaciones}" class="result-item">
+                <div>
+                    <strong th:text="${rec.key.name}"></strong>
+                    <span th:text="' (' + ${#numbers.formatDecimal(rec.value, 0, 0)} + '%)'"></span>
+                </div>
+                <a th:href="${rec.key.store_url}" target="_blank">
+                    Ver en la tienda
+                </a>
             </div>
         </div>
     </div>
 
     <div th:if="${rol == 'ADMIN'}">
-    <p class="section-title">➕ <span style="color:var(--dc-red)">Añadir</span> Nuevo Integrante</p>
-    <div class="card">
-        <div class="alert alert-error" th:if="${errorInsert != null}" th:text="${errorInsert}">ERROR EXISTENCIAL</div>
-        <div class="alert alert-success" th:if="${successInsert != null}" th:text="${successInsert}">YIPPIEEE</div>
-        <div class="alert alert-error" th:if="${errorRol != null}" th:text="${errorRol}">¿PERO TÚ QUIÉN ERES?</div>
+        <p class="section-title">➕ <span class="title-accent-red">Añadir</span> Nuevo Integrante</p>
+        <div class="card">
+            <div class="alert alert-error" th:if="${errorInsert != null}" th:text="${errorInsert}">ERROR EXISTENCIAL</div>
+            <div class="alert alert-success" th:if="${successInsert != null}" th:text="${successInsert}">YIPPIEEE</div>
+            <div class="alert alert-error" th:if="${errorRol != null}" th:text="${errorRol}">¿PERO TÚ QUIÉN ERES?</div>
 
-        <button class="btn btn-secondary" style="width: 100%;"
-                onclick="document.getElementById('insert-form').classList.toggle('visible')">
-            --- ABRIR PANEL DE CONTROL ---
-        </button>
+            <button class="btn btn-secondary btn-full"
+                    onclick="document.getElementById('insert-form').classList.toggle('visible')">
+                --- ABRIR PANEL DE CONTROL ---
+            </button>
 
-        <div id="insert-form" th:classappend="${(successInsert != null) or (errorInsert != null) or (errorRol != null)} ? 'visible' : ''">
-            <form action="/web/products" method="post">
-                <div class="form-grid">
-                    <input type="number" name="sid" placeholder="ID Digital (sid) *" required/>
-                    <input type="text"   name="name" placeholder="Nombre del juego *" required/>
-                </div>
-                <div class="form-grid">
-                    <input type="text" name="genres" placeholder="Género (RPG, Caos…)"/>
-                    <input type="text" name="tags" placeholder="Etiquetas (Miedo, Risa…)"/>
-                </div>
-                <div class="form-full">
-                    <textarea name="description" placeholder="Describe la aventura del juego..."></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary" style="margin-top:15px; width:100%; background:var(--dc-purple); box-shadow: 0 8px 0 #6600cc;">
-                    CONVERTIR EN INTEGRANTE DE SIROPE GAMES
-                </button>
-            </form>
+            <div id="insert-form" th:classappend="${(successInsert != null) or (errorInsert != null) or (errorRol != null)} ? 'visible' : ''">
+                <form action="/web/products" method="post">
+                    <div class="form-grid">
+                        <input type="number" name="sid" placeholder="ID Digital (sid) *" required/>
+                        <input type="text"   name="name" placeholder="Nombre del juego *" required/>
+                    </div>
+                    <div class="form-grid">
+                        <input type="text" name="genres" placeholder="Género (RPG, Caos…)"/>
+                        <input type="text" name="tags" placeholder="Etiquetas (Miedo, Risa…)"/>
+                    </div>
+                    <div class="form-full">
+                        <textarea name="description" placeholder="Describe la aventura del juego..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full btn-submit-insert">
+                        CONVERTIR EN INTEGRANTE DE SIROPE GAMES
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-</div>
+<script>
+    document.querySelector('.search-row').addEventListener('submit', function() {
+        document.getElementById('loading-overlay').classList.add('visible');
+    });
+</script>
 </body>
 </html>
