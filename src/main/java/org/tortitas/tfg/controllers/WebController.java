@@ -55,13 +55,6 @@ public class WebController {
     }
 
     //===========================================================================================================
-
-    @GetMapping("/web/api/test")
-    public ResponseEntity<String> ResponseEntity(){
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("Correcto! Tienes acceso al web controller");
-    }
-
     @PostMapping("/web/signup")
     public String signup(@RequestParam String nombreUser, @RequestParam String password, Model model) {
         try {
@@ -81,7 +74,7 @@ public class WebController {
     }
 
     //===========================================================================================================
-
+    //AUTOR ORIGINAL: iris-cafe
     @PostMapping("/web/signin")
     public String signin(@RequestParam String nombreUser, @RequestParam String password, HttpSession session, Model model) {
         try {
