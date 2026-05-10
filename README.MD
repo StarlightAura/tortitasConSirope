@@ -36,3 +36,7 @@ Compartimentalización de procesos dentro del programa.
 ### Algoritmo de similitud coseno.
 
 Algoritmo de búsqueda entre documentos vectorializados.
+
+---
+
+# TODO: Instrucciones
