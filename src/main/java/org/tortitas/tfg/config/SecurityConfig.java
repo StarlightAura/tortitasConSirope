@@ -1,6 +1,5 @@
 package org.tortitas.tfg.config;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,14 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.tortitas.tfg.models.User;
 
 @Configuration
 @EnableWebSecurity
@@ -33,12 +26,12 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .sessionManagement(session
-                        ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //VOY A HACER MÁS PRUEBAS PORQUE NO SE USA JWT COMO TAL POR LO QUE PUEDE NO SER NECESARIO
 
                 .formLogin(AbstractHttpConfigurer::disable) //si no desactivo el fomulario que viene por defecto da error
 
-                .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider) //AYUDA A PONER AL USUARIO DENTRO DEL CONTEXTO
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) //REGISTRANDO DEL FILTRO YA QUE SI NO SPRING LO SALTA
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -52,12 +45,8 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
-    /*
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-     */
-
 }
+
+//ES IMPORTANTE MENCIONAR QUE EL FILTRO SOLO FUNCIONA ACCEDIENDO DESDE POSTMAN, EL ACCESO POR EL NAVEGADOR SE HACE MEDIANTEÇ
+//SESIONES POR LO QUE EL FILTRO NO TIENE EFECTO DESDE ALLÌ
+// TRASLADÉ EL "passwordEncoder"A LA CLASE "AppConfig" PORQUE SEGUÍ EL TUTORIAL XD
