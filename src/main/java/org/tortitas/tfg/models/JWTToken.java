@@ -31,6 +31,8 @@ public class JWTToken {
         claims.setNotBeforeMinutesInThePast(2);
         claims.setSubject(username);
         claims.setClaim("rol", rol.name()); //para guardar el rol de usuario en el token
+        claims.setClaim("name", username);
+
 
         JsonWebSignature jws = new JsonWebSignature();
         jws.setPayload(claims.toJson());
@@ -45,6 +47,12 @@ public class JWTToken {
     public String getRolFromToken(String token) throws Exception {
         JwtClaims claims = getClaims(token);
         return claims.getStringClaimValue("rol"); //la idea es que segun el rol, muestre lo de insertar juego o no en el controlador
+    }
+
+    //COPIA DEL ANTERIOR METODO PARA PODER PONER AL USUARIO LOGEADO EN EL CONTEXTO DE SPRING
+    public String getUserNameFromToken(String username) throws Exception {
+        JwtClaims claims = getClaims(username);
+        return claims.getStringClaimValue("name");
     }
 
     // metodo privado aux para no repetir el codigo de validacion

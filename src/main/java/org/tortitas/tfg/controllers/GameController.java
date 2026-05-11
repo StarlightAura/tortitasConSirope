@@ -3,6 +3,7 @@ package org.tortitas.tfg.controllers;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.models.JWTToken;
@@ -22,6 +23,13 @@ public class GameController {
     private GameRepository gameRepository;
     @Autowired
     private OllamaEmbeddingModel ollamaEmbeddingModel;
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/test/admin")
+    public String admin() {
+        return "Admin content";
+    }
+
     @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
             @RequestParam String product,
