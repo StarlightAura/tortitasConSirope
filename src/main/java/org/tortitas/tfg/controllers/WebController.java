@@ -16,6 +16,7 @@ import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.repositories.UserRepo;
 import org.tortitas.tfg.services.GameService;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -110,15 +111,15 @@ public class WebController {
     public String recomendar(@RequestParam String product,
                              HttpSession session,
                              Model model) {
-        if (session.getAttribute("token") == null) return "redirect:/login"; //si no hay sesion, pa tu casa
+        if (session.getAttribute("token") == null) return "redirect:/login";
 
         String token = (String) session.getAttribute("token");
-        if (!jwtToken.isTokenValid(token)) { //si el token no es valido, pa tu casa
+        if (!jwtToken.isTokenValid(token)) {
             session.invalidate();
             return "redirect:/login";
         }
 
-        List<String> recomendaciones = gameService.recomendar(product); //llama al service y nos da la lista de jueguitos
+        List<AbstractMap.SimpleEntry<Game, Double>> recomendaciones = gameService.recomendar(product);
         model.addAttribute("recomendaciones", recomendaciones); //envia los datos al html
         model.addAttribute("query", product); //guarda la busqueda
         model.addAttribute("username", session.getAttribute("username"));
@@ -131,7 +132,6 @@ public class WebController {
     /*Cambios:
     * 1) Lo primero seria que en vez de poner los maravillosos doscientos parametros sueltos, lo he reducido a tres
     * principalmente porque si decidieramos cambiar añadiendo o quitando algo de Game ya seria un problema (aunque espero no cambiar nada de esa clase)
-    * ademas de que siendo sinceros quedaba feo de collons
     * 2) Comprueba el token antes de nada, eso no ha cambiado
     * 3) Ahora si un cambio, ver si tiene el permiso para insertar, si no lo tiene y de algun modo lo intenta, le hace bullying con pasivo agresividad
     * 4) Lo ultimo seria que ahora ademas de pasarle el username, tambien le pasamos el rol. Antes nos daba igual por asi decirlo porque aunque con

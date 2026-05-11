@@ -9,6 +9,7 @@ import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.services.GameService;
 
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -25,7 +26,7 @@ public class GameController {
     @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
             @RequestParam String product,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Token requerido");
@@ -36,13 +37,13 @@ public class GameController {
             return ResponseEntity.status(401).body("Token inválido o expirado");
         }
 
-        List<String> recomendaciones = gameService.recomendar(product);
+        List<AbstractMap.SimpleEntry<Game, Double>> recomendaciones = gameService.recomendar(product);
         return ResponseEntity.ok(recomendaciones);
     }
     @PostMapping("/products")
     public ResponseEntity<?> insertarProducto(
             @RequestBody Game juego,
-            @RequestHeader("Authorization") String authHeader) {
+            @RequestHeader(value = "Authorization", required = false) String authHeader) {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return ResponseEntity.status(401).body("Token requerido");
