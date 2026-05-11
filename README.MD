@@ -27,7 +27,16 @@ Uso de tokens seguros JWT para la autenticación de usuarios. Biblioteca Jose4J.
 
 ### Postman
 
-Scripts de Postman para la verificación de la funcionalidad correcta del programa.
+Script de Postman para la verificación de la funcionalidad correcta del programa.
+El script se encuentra en la carpeta "postman-tests" y esta listo para poder importarse en postman y ejecutarse.
+
+| Endpoint                                                       | Descripción                                 |
+|----------------------------------------------------------------|---------------------------------------------|
+|http://localhost:8787/api/auth/signin                          | Login exitoso y obtención del token         |
+|http://localhost:8787/api/recommendations?product=dark%20souls | Fallo sin token                             
+|http://localhost:8787/api/products    | Inserción de producto con vectorización, usando token válido |
+|http://localhost:8787/api/recommendations?product=dark%20souls  | Recomendaciones con token válido            |
+
 
 ### Spring Boot
 
@@ -36,6 +45,25 @@ Compartimentalización de procesos dentro del programa.
 ### Algoritmo de similitud coseno.
 
 Algoritmo de búsqueda entre documentos vectorializados.
+
+### En memoria del Bot de Telegram
+Teníamos nuestro bot llamado @SiropeGamersBot en Telegram y usando los siguientes comandos el usuario se podía registrar, iniciar sesión y buscar la recomendación de juegos:
+
+            
+| Comando   | Descripción  |
+|---|---|
+| /start  |Muestra los comandos disponibles   |
+| /registro  | Crear una cuenta nueva  |
+| /login   | Iniciar sesión y obtener token  |
+|/recomendar <juego>   | Pedir recomendaciones (requiere login)  |
+
+
+![captura bot 1.png](src/main/resources/static/img/captura%20bot%201.png)
+![captura bot.png](src/main/resources/static/img/captura%20bot.png)
+
+#### Momentos humildes
+
+![captura bot errores.png](src/main/resources/static/img/captura%20bot%20errores.png)
 
 ---
 
