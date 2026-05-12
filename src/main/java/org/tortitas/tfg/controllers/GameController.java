@@ -30,34 +30,21 @@ public class GameController {
         return "Admin content";
     }
 
+    //Los PreAuthorize son como si le estes diciendo a Spring que mire antes que rol tiene el que está intentando acceder
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
-            @RequestParam String product,
-            @RequestHeader("Authorization") String authHeader) {
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).body("Token requerido");
-        }
-
-        String token = authHeader.substring(7);
-        if (!jwtToken.isTokenValid(token)) {
-            return ResponseEntity.status(401).body("Token inválido o expirado");
-        }
+            @RequestParam String product) {
 
         List<String> recomendaciones = gameService.recomendar(product);
         return ResponseEntity.ok(recomendaciones);
     }
+
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/products")
     public ResponseEntity<?> insertarProducto(
-            @RequestBody Game juego,
-            @RequestHeader("Authorization") String authHeader) {
-
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.status(401).body("Token requerido");
-        }
-        if (!jwtToken.isTokenValid(authHeader.substring(7))) {
-            return ResponseEntity.status(401).body("Token inválido");
-        }
+            @RequestBody Game juego) {
 
         try {
             float[] vector = ollamaEmbeddingModel.embed(juego.game2document());
