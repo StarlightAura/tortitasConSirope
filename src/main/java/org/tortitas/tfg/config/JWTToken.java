@@ -1,4 +1,4 @@
-package org.tortitas.tfg.models;
+package org.tortitas.tfg.config;
 
 import org.jose4j.jwk.RsaJsonWebKey;
 import org.jose4j.jwk.RsaJwkGenerator;
@@ -9,6 +9,7 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
 import org.springframework.stereotype.Component;
+import org.tortitas.tfg.models.Rol;
 
 @Component
 public class JWTToken {

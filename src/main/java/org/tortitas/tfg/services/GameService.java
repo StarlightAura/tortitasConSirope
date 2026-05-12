@@ -19,9 +19,24 @@ import java.util.stream.Collectors;
 public class GameService {
     @Autowired
     private GameRepository gameRepository;
-
     @Autowired
     private OllamaEmbeddingModel ollamaEmbeddingModel;
+
+    //Nuevo metodo privado que sirve para vectorizar (como bien indica el nombre) cualquier texto
+    // y devolver el embedding. Es lo mismo que teniamos repetido en GameService, GameController y
+    // WebController. Ahora simplemente esta una unica vez escrito aqui y el resto que lo llame
+
+    private Vector<Double> vectorizar (String texto) {
+        float[] vector = ollamaEmbeddingModel.embed(texto);
+        Vector<Double> embeddings = new Vector<>();
+        for (float v : vector) embeddings.add((double) v);
+        return embeddings;
+    }
+
+
+    public Vector<Double> vectorizarGame(Game game) {
+        return vectorizar(game.game2document().getFormattedContent());
+    }
 
     // Llama a esto UNA VEZ para cargar el JSON en MongoDB y generar embeddings
     public void cargarJuegosDesdeJson(String rutaJson) throws Exception {
@@ -34,23 +49,27 @@ public class GameService {
         for (Game juego : juegos) {
             // Solo vectoriza si no tiene embedding ya
             if (juego.embeddings == null || juego.embeddings.isEmpty()) {
-                float[] vector = ollamaEmbeddingModel.embed(juego.game2document());
-                Vector<Double> embeddings = new Vector<>();
-                for (float v : vector) embeddings.add((double) v);
-                juego.embeddings = embeddings;
+                juego.embeddings = vectorizarGame(juego);
             }
             gameRepository.save(juego);
             System.out.println("Guardado: " + juego.name);
         }
     }
 
+    //Esto antes se hacia tanto en el Game controller como en el WebController, asi que se mueve aqui
+    //y solo tenemos que llamarlo
+    public void insertarGame (Game game) {
+        if (gameRepository.existsById(game.sid)) {
+            throw new IllegalArgumentException("El ID " + game.sid + " ya existe.");
+        }
+        game.embeddings = vectorizarGame(game);
+        gameRepository.save(game);
+    }
+
     // Esto es lo que llama el bot con la query del usuario
     public List<AbstractMap.SimpleEntry<Game, Double>> recomendar(String query)   {
         // 1. Vectorizar la query
-        float[] vectorQuery = ollamaEmbeddingModel.embed(query);
-        Vector<Double> queryEmbedding = new Vector<>();
-        for (float v : vectorQuery) queryEmbedding.add((double) v);
-
+        Vector<Double> queryEmbedding = vectorizar(query);
         // 2. Comparar con todos los juegos en MongoDB
         List<Game> todos = gameRepository.findAll();
 
@@ -62,28 +81,5 @@ public class GameService {
                 .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
                 .limit(5)
                 .collect(Collectors.toList());
-
-       /*  // Esto es lo que llama el bot con la query del usuario
-        public List<String> recomendar(String query) {
-        // 1. Vectorizar la query
-        float[] vectorQuery = ollamaEmbeddingModel.embed(query);
-        Vector<Double> queryEmbedding = new Vector<>();
-        for (float v : vectorQuery) queryEmbedding.add((double) v);
-
-        // 2. Comparar con todos los juegos en MongoDB
-        List<Game> todos = gameRepository.findAll();
-
-        return todos.stream()
-                .filter(g -> g.embeddings != null && !g.embeddings.isEmpty())
-                .map(g -> new AbstractMap.SimpleEntry<>(
-                        g.name,
-                        CosineSimilarity.cosineSimilarity(queryEmbedding, g.embeddings)
-                ))
-                .sorted((a, b) -> Double.compare(b.getValue(), a.getValue())) // mayor similitud primero
-                .limit(5)
-                //TODO QUITAR LOS PORCENTAJES MAYBE
-                .map(e -> String.format("🎮 %s (%.0f%% similitud)", e.getKey(), e.getValue() * 100))
-                .collect(Collectors.toList());
-    }*/
     }
 }
