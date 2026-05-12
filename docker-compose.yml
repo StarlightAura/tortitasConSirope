@@ -30,6 +30,9 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - PGDATA=/var/lib/postgresql
+    volumes:
+      - ./sql/postgres_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./sql/postgres_data.sql:/docker-entrypoint-initdb.d/02_data.sql
     restart: always
   ollama:
     image: ollama/ollama:latest
