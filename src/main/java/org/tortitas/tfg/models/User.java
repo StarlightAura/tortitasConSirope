@@ -1,31 +1,26 @@
 package org.tortitas.tfg.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @Builder
-@AllArgsConstructor
+@Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
-@Table(name = "Usuarios")
+@Table(name = "USERS")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer chatId;
-
     @Column(length = 50, unique = true, nullable = false)
-    private String nombreUser;
+    private String name;
 
+    /*NO LE PUSE LENGTH PORQUE NO ESTOY SEGURA CUANTOS CARACTERES TIENE*/
     @Column(nullable = false)
     private String password;
 
     @Builder.Default
-    @Column(length = 10)
+    @Column(length = 5)
     @Enumerated(EnumType.STRING)
     private Rol role = Rol.USER;
 }
