@@ -65,6 +65,6 @@ public class GameController {
 *
 * 1. @PreAuthorize, esta anotación ayuda a que spring confirme el rol del usuario antes de responder a la petición
 * 2. Ya no se utiliza JWTToken ni ninguna clase relacionada con la seguridad debido a que las responsabilidades se trasladaron
-* a la capa "config" y se repartión entre las clases que están dentro de la misma
+* a la capa "config" y se repartieron entre las clases que están dentro de la misma
 *
 * */
