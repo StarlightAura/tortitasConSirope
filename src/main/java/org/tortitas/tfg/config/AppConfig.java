@@ -22,10 +22,10 @@ public class AppConfig {
     @Bean
     public UserDetailsService userDetailsService(){ //AGREGA LOS DETALLES DEL USUARIO AL INICIAR SESION
         return username -> {
-            final User user = repository.findByNombreUser(username)
+            final User user = repository.findById(username)
                     .orElseThrow(()->new UsernameNotFoundException("User not found"));
             return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getNombreUser())
+                    .username(user.getName())
                     .password(user.getPassword())
                     .authorities("ROLE_"+user.getRole().name())
                     .build();

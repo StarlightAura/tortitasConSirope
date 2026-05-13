@@ -6,12 +6,12 @@ import org.jose4j.lang.JoseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.tortitas.tfg.dto.UserRequestDTO;
+import org.tortitas.tfg.dto.UserRequestWebDTO;
 import org.tortitas.tfg.exception.IncorrectPasswordException;
 import org.tortitas.tfg.exception.NoTokenPresentException;
 import org.tortitas.tfg.exception.UserNotFoundException;
 import org.tortitas.tfg.mapper.UserMapper;
-import org.tortitas.tfg.models.JWTToken;
+import org.tortitas.tfg.config.JWTToken;
 import org.tortitas.tfg.models.User;
 import org.tortitas.tfg.repositories.UserRepository;
 
@@ -28,9 +28,9 @@ public class WebService {
     private final PasswordEncoder passwordEncoder;
 
     //Registry
-    public void signup(UserRequestDTO dto){
+    public void signup(UserRequestWebDTO dto){
 
-        Optional<User> optionalUser = repository.findByNombreUser(dto.getName());
+        Optional<User> optionalUser = repository.findById(dto.getName());
 
         if (optionalUser.isPresent()){
             throw new IllegalStateException("User already exist.");
@@ -42,7 +42,7 @@ public class WebService {
     }
 
     //Login
-    public HttpSession signin(UserRequestDTO dto, HttpSession session) throws JoseException {
+    public HttpSession signin(UserRequestWebDTO dto, HttpSession session) throws JoseException {
 
         final User user = findByNameInternal(dto.getName());
 
@@ -50,10 +50,10 @@ public class WebService {
             throw new IncorrectPasswordException("Incorrect password.");
         }
 
-        final String token = jwtToken.generateToken(user.getNombreUser(), user.getRole());
+        final String token = jwtToken.generateToken(user.getName(), user.getRole());
 
         session.setAttribute("token", token);
-        session.setAttribute("username", user.getNombreUser());
+        session.setAttribute("username", user.getName());
         session.setAttribute("rol", user.getRole().name());
 
         return session;
@@ -63,7 +63,7 @@ public class WebService {
     //Consult Database
     public User findByNameInternal(String name){
         return repository
-                .findByNombreUser(name)
+                .findById(name)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 

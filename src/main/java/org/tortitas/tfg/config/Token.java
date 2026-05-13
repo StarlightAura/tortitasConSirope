@@ -1,7 +1,8 @@
-package org.tortitas.tfg.models;
+package org.tortitas.tfg.config;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.tortitas.tfg.models.User;
 
 @Data
 @Builder
@@ -20,7 +21,7 @@ public class Token {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(columnDefinition = "TEXT",unique = true)
     private String token;
 
     @Enumerated(EnumType.STRING)

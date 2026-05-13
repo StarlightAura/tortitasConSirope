@@ -14,28 +14,31 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.tortitas.tfg.exception.InvalidTokenException;
-import org.tortitas.tfg.models.JWTToken;
+import org.tortitas.tfg.repositories.TokenRepository;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity //AYUDA A ACTIVAR QUE SPRING MIRE EL ROL DE UN USUARIO ANTES DE CONCEDERLE ACCESO A UN ENDPOINT
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JWTToken jwtToken;
     private final JwtAuthFilter jwtAuthFilter;
+    private final TokenRepository tokenRepository;
     private final AuthenticationProvider authenticationProvider;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .sessionManagement(session
-                        ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //VOY A HACER MÁS PRUEBAS PORQUE NO SE USA JWT COMO TAL POR LO QUE PUEDE NO SER NECESARIO
+                        ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //Indica que la seguridad está basada en tokens
 
-                .formLogin(AbstractHttpConfigurer::disable) //si no desactivo el fomulario que viene por defecto da error
+                .formLogin(AbstractHttpConfigurer::disable) //Si no desactivo el fomulario que viene por defecto da error
 
-                .authenticationProvider(authenticationProvider) //AYUDA A PONER AL USUARIO DENTRO DEL CONTEXTO
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) //REGISTRANDO DEL FILTRO YA QUE SI NO SPRING LO SALTA
+                .authenticationProvider(authenticationProvider) //Proveedor de autenticación de Spring Security
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) //Registramos el filtro
 
                 .authorizeHttpRequests(auth -> auth
 
@@ -70,11 +73,31 @@ public class SecurityConfig {
         if (!jwtToken.isTokenValid(jwtTokenSecurity)){
             throw new InvalidTokenException("Invalid token");
         }
+
+        final Token foundToken = tokenRepository.findByToken(jwtTokenSecurity)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid token"));
+
+
+        foundToken.setExpired(true);
+        foundToken.setRevoked(true);
+        tokenRepository.save(foundToken);
     }
 
 
 }
 
-//ES IMPORTANTE MENCIONAR QUE EL FILTRO SOLO FUNCIONA ACCEDIENDO DESDE POSTMAN, EL ACCESO POR EL NAVEGADOR SE HACE MEDIANTE
-//SESIONES POR LO QUE EL FILTRO NO TIENE EFECTO DESDE ALLÌ
-// TRASLADÉ EL "passwordEncoder"A LA CLASE "AppConfig" PORQUE SEGUÍ EL TUTORIAL XD
+/*
+* Elementos agregados recientemente
+*
+* 1. @EnableMethodSecurity: Esta anotación ayuda a activar todos aquellos métodos que requieran pre-autorización, por ejemplo:
+* la anotación @PreAuthorize la cual recoge la información del usuario autenticado y mira su rol
+*
+* 2. authenticationProvider y addFilterBefore, estos métodos nos ayudan a que el usuario que está intentando acceder pase por
+* un por la cadena de filtros de Spring y que se registren sus credenciales hasta que este decida hacer logout
+*
+*3. ".anyRequest().authenticated()" Indica a Spring que después de los endpoints declarados como públicos toda solicutud deberá
+* ser atendida solo si el usuario está autenticado
+*
+*4. ".logout" ayuda a desactivar el token al momento que el usuario decida salir, obligando a que ese token sea reconocido como
+* expirado de forma automática sin esperar que este expire con el tiempo.
+* */

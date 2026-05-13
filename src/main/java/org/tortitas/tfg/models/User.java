@@ -2,6 +2,10 @@ package org.tortitas.tfg.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.tortitas.tfg.config.Token;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter @Setter
@@ -9,13 +13,12 @@ import lombok.*;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "USERS") /*LE PUSE EL NOMBRE EN INGLÉS PARA QUE SIGA UN SOLO IDIOMA */
 public class User {
     @Id
     @Column(length = 50, unique = true, nullable = false)
     private String name;
 
-    /*NO LE PUSE LENGTH PORQUE NO ESTOY SEGURA CUANTOS CARACTERES TIENE*/
     @Column(nullable = false)
     private String password;
 
@@ -23,4 +26,9 @@ public class User {
     @Column(length = 5)
     @Enumerated(EnumType.STRING)
     private Rol role = Rol.USER;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
+    private List<Token> tokens = new ArrayList<>();
+
 }

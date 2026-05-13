@@ -10,68 +10,42 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.tortitas.tfg.dto.UserRequestDTO;
-import org.tortitas.tfg.models.JWTToken;
+import org.tortitas.tfg.dto.UserRequestWebDTO;
+import org.tortitas.tfg.config.JWTToken;
 import org.tortitas.tfg.models.Rol;
 import org.tortitas.tfg.models.User;
+import org.tortitas.tfg.record.LoginRequest;
+import org.tortitas.tfg.record.RegisterRequest;
+import org.tortitas.tfg.record.TokenResponse;
 import org.tortitas.tfg.repositories.UserRepository;
+import org.tortitas.tfg.services.AuthService;
 
 import java.util.Map;
 import java.util.Optional;
-
-
 
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
+    private final AuthService service;
 
     @GetMapping("/test")
     public ResponseEntity<?>test(){
-        return ResponseEntity.status(HttpStatus.OK).body("Entraste!");
+        return ResponseEntity.status(HttpStatus.OK).body("Test de conexión");
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody UserRequestDTO dto) {
+    public ResponseEntity<TokenResponse> signup(@Valid @RequestBody RegisterRequest request) throws JoseException {
+        final TokenResponse tokenResponse = service.register(request);
 
-        if (userRepository.findByNombreUser(dto.getName()).isPresent()) {
-            return ResponseEntity.badRequest().body("Usuario ya existe");
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(tokenResponse);
 
-        User user = User.builder()
-                .nombreUser(dto.getName())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .role(Rol.ADMIN)
-                .build();
-
-        userRepository.save(user);
-        return ResponseEntity.ok("Usuario registrado correctamente");
     }
 
-    @Autowired private JWTToken jwtToken;
-
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@RequestBody Map<String, String> creds) throws JoseException {
-
-        String name = creds.get("nombreUser");
-        String password = creds.get("password");
-
-        authenticationManager.authenticate(
-             new UsernamePasswordAuthenticationToken(
-                     name,
-                     password
-             )
-        );
-
-        Optional<User> user = userRepository.findByNombreUser(creds.get("nombreUser"));
-        if (user.isEmpty() || !passwordEncoder.matches(creds.get("password"), user.get().getPassword())) {
-            return ResponseEntity.status(401).body("Credenciales incorrectas");
-        }
-        String token = jwtToken.generateToken(user.get().getNombreUser(), user.get().getRole());
-        return ResponseEntity.ok(Map.of("token", token));
+    public ResponseEntity<?> signin(@Valid @RequestBody final LoginRequest request) throws JoseException {
+        final TokenResponse tokenResponse = service.login(request);
+        return ResponseEntity.status(HttpStatus.OK).body(tokenResponse);
     }
 }

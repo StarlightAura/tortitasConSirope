@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.tortitas.tfg.models.Game;
-import org.tortitas.tfg.models.JWTToken;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.services.GameService;
 
@@ -18,7 +17,6 @@ import java.util.Vector;
 public class GameController {
     @Autowired
     private GameService gameService;
-    @Autowired private JWTToken jwtToken;
     @Autowired
     private GameRepository gameRepository;
     @Autowired
@@ -30,7 +28,10 @@ public class GameController {
         return "Admin content";
     }
 
-    //Los PreAuthorize son como si le estes diciendo a Spring que mire antes que rol tiene el que está intentando acceder
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/test/user")
+    public String user(){return "User content";}
+
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
@@ -58,3 +59,12 @@ public class GameController {
         }
     }
 }
+
+/*
+* Cambios y elementos añadidos
+*
+* 1. @PreAuthorize, esta anotación ayuda a que spring confirme el rol del usuario antes de responder a la petición
+* 2. Ya no se utiliza JWTToken ni ninguna clase relacionada con la seguridad debido a que las responsabilidades se trasladaron
+* a la capa "config" y se repartión entre las clases que están dentro de la misma
+*
+* */

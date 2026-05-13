@@ -1,13 +1,13 @@
 package org.tortitas.tfg.mapper;
 
-import org.tortitas.tfg.dto.UserRequestDTO;
+import org.tortitas.tfg.dto.UserRequestWebDTO;
 import org.tortitas.tfg.models.User;
 
 public class UserMapper {
 
-    public static User toUser(UserRequestDTO dto){
+    public static User toUser(UserRequestWebDTO dto){
         return User.builder()
-                .nombreUser(dto.getName())
+                .name(dto.getName())
                 .password(dto.getPassword())
                 .build();
     }

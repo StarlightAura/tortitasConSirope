@@ -7,8 +7,6 @@ import org.tortitas.tfg.models.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByNombreUser(String nombreUser);
-    Optional<User> findByChatId(Long chatId);
+public interface UserRepository extends JpaRepository<User, String> {
 
 }

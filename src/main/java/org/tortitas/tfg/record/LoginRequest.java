@@ -1,4 +1,4 @@
-package org.tortitas.tfg.dto;
+package org.tortitas.tfg.record;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

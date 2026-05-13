@@ -3,19 +3,15 @@ package org.tortitas.tfg.controllers;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.tortitas.tfg.dto.UserRequestDTO;
+import org.tortitas.tfg.dto.UserRequestWebDTO;
 import org.tortitas.tfg.exception.AuthException;
 import org.tortitas.tfg.models.Game;
-import org.tortitas.tfg.models.JWTToken;
+import org.tortitas.tfg.config.JWTToken;
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.services.WebService;
-
-import java.util.Vector;
 
 @Controller
 @AllArgsConstructor
@@ -58,7 +54,7 @@ public class WebController {
     @PostMapping("/web/signup")
     public String signup(@RequestParam String nombreUser, @RequestParam String password, Model model) {
         try {
-            final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
+            final UserRequestWebDTO dto = new UserRequestWebDTO(nombreUser, password);
             webService.signup(dto);
             model.addAttribute(
                     "success",
@@ -78,7 +74,7 @@ public class WebController {
     @PostMapping("/web/signin")
     public String signin(@RequestParam String nombreUser, @RequestParam String password, HttpSession session, Model model) {
         try {
-            final UserRequestDTO dto = new UserRequestDTO(nombreUser, password);
+            final UserRequestWebDTO dto = new UserRequestWebDTO(nombreUser, password);
             webService.signin(dto, session);
             return "redirect:/home";
         } catch (Exception e) {
