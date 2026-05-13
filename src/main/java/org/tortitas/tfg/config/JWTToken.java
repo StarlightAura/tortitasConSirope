@@ -5,6 +5,7 @@ import org.jose4j.jwk.RsaJwkGenerator;
 import org.jose4j.jws.AlgorithmIdentifiers;
 import org.jose4j.jws.JsonWebSignature;
 import org.jose4j.jwt.JwtClaims;
+import org.jose4j.jwt.NumericDate;
 import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.lang.JoseException;
@@ -49,10 +50,16 @@ public class JWTToken {
         return claims.getStringClaimValue("rol"); //la idea es que segun el rol, muestre lo de insertar juego o no en el controlador
     }
 
-    //COPIA DEL ANTERIOR METODO PARA PODER PONER AL USUARIO LOGEADO EN EL CONTEXTO DE SPRING
+    //Extraemos el nombre del usuario del token para poder ser usado en el filtro
     public String getUserNameFromToken(String username) throws Exception {
         JwtClaims claims = getClaims(username);
         return claims.getStringClaimValue("name");
+    }
+
+    //Extraemos la expiración del token para poder ponerlo como expirado después del logout
+    private boolean extractExpiration(final String token) throws Exception {
+        NumericDate now = NumericDate.now();
+        return getClaims(token).getExpirationTime().isBefore(now);
     }
 
     // metodo privado aux para no repetir el codigo de validacion
