@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🎪 SIROPE GAMES - DIGITAL CIRCUS 🎪</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Jua&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+</head>
+<body th:classappend="${rol == 'ADMIN'} ? 'bg-admin' : 'bg-user'">
+
+<!--LA VENTANITA DE CARGA-->
+<div id="loading-overlay">
+    <div class="loading-card">
+        <div class="loading-spinner"></div>
+        <p class="loading-title">¡BUSCANDO!</p>
+        <p class="loading-subtitle">Explorando el vacío digital...</p>
+    </div>
+</div>
+
+<nav>
+    <div class="nav-brand">🎪 <span>DIGITAL</span> PANCAKES 🥞</div>
+    <div class="nav-actions">
+        <span class="nav-user" th:text="'Sujeto: ' + ${username}">Sujeto: Pomni</span>
+        <a href="/web/logout" class="nav-logout">¡ABSTRAERSE!</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <p class="section-title">🔍 <span class="title-accent-cyan">Explorar</span> el Vacío</p>
+    <div class="card card-search">
+        <form action="/web/recommendations" method="get" class="search-row">
+            <input type="text" name="product"
+                   th:value="${query}"
+                   placeholder="Introduce tu proxima aventura (ej: aventura de chuches)"
+                   required/>
+            <button type="submit" class="btn btn-primary" id="btn-buscar">¡GENERAR!</button>
+        </form>
+
+        <div th:if="${recomendaciones}" class="results-container">
+            <p class="results-header">Tus próximas aventuras:</p>
+            <div th:each="rec : ${recomendaciones}" class="result-item">
+                <div>
+                    <strong th:text="${rec.key.name}"></strong>
+                    <span th:text="' (' + ${#numbers.formatDecimal(rec.value, 0, 0)} + '%)'"></span>
+                </div>
+                <a th:href="${rec.key.store_url}" target="_blank">
+                    Ver en la tienda
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${rol == 'ADMIN'}">
+        <p class="section-title">➕ <span class="title-accent-red">Añadir</span> Nuevo Integrante</p>
+        <div class="card">
+            <div class="alert alert-error" th:if="${errorInsert != null}" th:text="${errorInsert}">ERROR EXISTENCIAL</div>
+            <div class="alert alert-success" th:if="${successInsert != null}" th:text="${successInsert}">YIPPIEEE</div>
+            <div class="alert alert-error" th:if="${errorRol != null}" th:text="${errorRol}">¿PERO TÚ QUIÉN ERES?</div>
+
+            <button class="btn btn-secondary btn-full"
+                    onclick="document.getElementById('insert-form').classList.toggle('visible')">
+                --- ABRIR PANEL DE CONTROL ---
+            </button>
+
+            <div id="insert-form" th:classappend="${(successInsert != null) or (errorInsert != null) or (errorRol != null)} ? 'visible' : ''">
+                <form action="/web/products" method="post">
+                    <div class="form-grid">
+                        <input type="number" name="sid" placeholder="ID Digital (sid) *" required/>
+                        <input type="text"   name="name" placeholder="Nombre del juego *" required/>
+                    </div>
+                    <div class="form-grid">
+                        <input type="text" name="genres" placeholder="Género (RPG, Caos…)"/>
+                        <input type="text" name="tags" placeholder="Etiquetas (Miedo, Risa…)"/>
+                    </div>
+                    <div class="form-full">
+                        <textarea name="description" placeholder="Describe la aventura del juego..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full btn-submit-insert">
+                        CONVERTIR EN INTEGRANTE DE SIROPE GAMES
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.querySelector('.search-row').addEventListener('submit', function() {
+        document.getElementById('loading-overlay').classList.add('visible');
+    });
+</script>
+</body>
+</html>

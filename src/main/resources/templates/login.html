@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>🎪 SIROPE GAMES - ACCESO AL VACÍO 🎪</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Jua&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+
+</head>
+<body>
+
+<div class="card">
+    <h1>SIROPE GAMES</h1>
+    <p class="subtitle">¡No te abstraigas todavía!</p>
+
+    <div class="alert alert-error" th:if="${error}" th:text="${error}">ERROR EXISTENCIAL</div>
+    <div class="alert alert-success" th:if="${success}" th:text="${success}">ENTRADA CONCEDIDA</div>
+
+    <form action="/web/signin" method="post">
+        <label>Sujeto</label>
+        <input type="text" name="nombreUser" placeholder="Nombre de usuario..." required/>
+
+        <label>Código Secreto</label>
+        <input type="password" name="password" placeholder="Contraseña..." required/>
+
+        <button type="submit" class="btn btn-primary">¡ENTRAR AL SHOW!</button>
+    </form>
+
+    <div class="divider">--- ¿NUEVA ENTIDAD? ---</div>
+
+    <form action="/web/signup" method="post">
+        <div style="display: flex; gap: 10px;">
+            <input type="text" name="nombreUser" placeholder="Usuario" required/>
+            <input type="password" name="password" placeholder="Clave" required/>
+        </div>
+        <button type="submit" class="btn btn-secondary">REGISTRAR EN EL SISTEMA</button>
+    </form>
+</div>
+</body>
+</html>

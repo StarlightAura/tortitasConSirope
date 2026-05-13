@@ -1,0 +1,41 @@
+services:
+  springapp:
+    container_name: springapp
+    image: tortitas-con-sirope:1.0.0
+    build: .
+    ports:
+      - 8787:8787
+    environment:
+      - DATABASE_URL=jdbc:postgresql://games:5432/${DB_NAME}
+      - DATABASE_USERNAME=${DB_USER}
+      - DATABASE_PASSWORD=${DB_PASSWORD}
+      - SPRING_MONGODB_URI=${MONGO_URI}
+      - SPRING_MONGO_DB=${MONGO_DB}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SERVER_PORT=8787
+      - SPRING_SECURITY_USER_NAME=disable
+      - SPRING_AUTOCONFIGURE_EXCLUDE=org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+      - SPRING_AI_OLLAMA_BASE_URL=${OLLAMA_URL}
+    depends_on:
+      - games
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  games:
+    container_name: games
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - PGDATA=/var/lib/postgresql
+    restart: always
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - 11434:11434
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
