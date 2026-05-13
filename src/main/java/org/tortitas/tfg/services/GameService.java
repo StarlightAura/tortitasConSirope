@@ -67,7 +67,7 @@ public class GameService {
     }
 
     // Esto es lo que llama el bot con la query del usuario
-    public List<AbstractMap.SimpleEntry<Game, Double>> recomendar(String query)   {
+    /*public List<AbstractMap.SimpleEntry<Game, Double>> recomendar(String query)   {
         // 1. Vectorizar la query
         Vector<Double> queryEmbedding = vectorizar(query);
         // 2. Comparar con todos los juegos en MongoDB
@@ -81,5 +81,5 @@ public class GameService {
                 .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
                 .limit(5)
                 .collect(Collectors.toList());
-    }
+    }*/
 }

@@ -88,7 +88,7 @@ public class WebController {
 
     //===========================================================================================================
 
-    @GetMapping("/web/recommendations")
+    /*@GetMapping("/web/recommendations")
     public String recomendar(@RequestParam String product, HttpSession session, Model model) {
         String token = (String) session.getAttribute("token");
         if (token == null || !jwtToken.isTokenValid(token)) {
@@ -102,7 +102,7 @@ public class WebController {
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("rol", session.getAttribute("rol")); //para mostrar una interfaz u otra dependiendo del rol
         return "home";
-    }
+    }*/
 
     //===========================================================================================================
 

@@ -16,7 +16,7 @@ public class GameController {
     @Autowired private JWTToken jwtToken;
 
     //=================================================================================================================
-    @GetMapping("/recommendations")
+    /*@GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
             @RequestParam String product,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
@@ -26,7 +26,7 @@ public class GameController {
 
         List<AbstractMap.SimpleEntry<Game, Double>> recomendaciones = gameService.recomendar(product);
         return ResponseEntity.ok(recomendaciones);
-    }
+    }*/
 
     //=================================================================================================================
 
