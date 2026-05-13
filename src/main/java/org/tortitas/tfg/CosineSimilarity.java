@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 
 public class CosineSimilarity {
 
-    public static double cosineSimilarity(Vector<Double> vectorA, Vector<Double> vectorB) {
+    public static double cosineSimilarity(Vector<Float> vectorA, Vector<Float> vectorB) {
 
         if (vectorA.size() != vectorB.size()) {
             throw new IllegalArgumentException("Vectors do not have the same size.");
