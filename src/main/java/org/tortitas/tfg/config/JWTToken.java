@@ -57,13 +57,6 @@ public class JWTToken {
         return claims.getStringClaimValue("name");
     }
 
-    //TODO PUEDE QUE NO SEA NECESARIO
-    //Extraemos la expiración del token para poder ponerlo como expirado después del logout
-    private boolean extractExpiration(final String token) throws Exception {
-        NumericDate now = NumericDate.now();
-        return getClaims(token).getExpirationTime().isBefore(now);
-    }
-
     // metodo privado aux para no repetir el codigo de validacion
     private JwtClaims getClaims(String token) throws Exception {
         JwtConsumer jwtConsumer = new JwtConsumerBuilder()

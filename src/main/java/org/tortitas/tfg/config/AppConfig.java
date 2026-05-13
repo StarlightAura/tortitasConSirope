@@ -20,7 +20,7 @@ public class AppConfig {
     private final UserRepository repository;
 
     @Bean
-    public UserDetailsService userDetailsService(){ //AGREGA LOS DETALLES DEL USUARIO AL INICIAR SESION
+    public UserDetailsService userDetailsService(){ //Agrega los detalles del usuario al UserDetailsService
         return username -> {
             final User user = repository.findById(username)
                     .orElseThrow(()->new UsernameNotFoundException("User not found"));
