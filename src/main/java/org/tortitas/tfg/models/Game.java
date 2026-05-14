@@ -31,13 +31,13 @@ public class Game {
     public List<String> languages;
     public List<String> genres;
     public List<String> tags;
-    public Vector<Double> embeddings;
+    //public Vector<Double> embeddings;
 
-    public org.springframework.ai.document.Document game2document(){
+    /*public org.springframework.ai.document.Document game2document(){
         String juegosContent = String.format(
                 "%s. %s. Genres: %s. Tags: %s. Developers: %s",
                 this.name, this.description, this.genres, this.tags, this.developers
         );
         return new org.springframework.ai.document.Document(juegosContent);
-    }
+    }*/
 }

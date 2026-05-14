@@ -1,5 +1,8 @@
 package org.tortitas.tfg;
 
+import org.springframework.ai.document.Document;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -9,6 +12,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.services.GameService;
 
+import java.util.List;
+
 @SpringBootApplication
 @EnableMongoRepositories
 public class TfgApplication {
@@ -16,6 +21,8 @@ public class TfgApplication {
     GameRepository gameRepository;
     @Autowired
     private GameService gameService;
+    @Autowired
+    private VectorStore vectorStore;
 
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);
@@ -23,13 +30,7 @@ public class TfgApplication {
     @Bean
     public CommandLineRunner cargarDatos() {
         return args -> {
-            long count = gameRepository.count();
-            if (count == 0) {
-                gameService.cargarJuegosDesdeJson("src/main/resources/out.json");
-            } else {
-                System.out.println("Juegos ya cargados en MongoDB (" + count + "), saltando carga.");
-            }
+            gameService.cargarJuegosDesdeJson("src/main/resources/out.json");
         };
     }
 }
-

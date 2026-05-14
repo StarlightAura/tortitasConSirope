@@ -1,5 +1,6 @@
 package org.tortitas.tfg.controllers;
 
+import org.springframework.ai.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class GameController {
     @Autowired private JWTToken jwtToken;
 
     //=================================================================================================================
-    /*@GetMapping("/recommendations")
+    @GetMapping("/recommendations")
     public ResponseEntity<?> recomendar(
             @RequestParam String product,
             @RequestHeader(value = "Authorization", required = false) String authHeader) {
@@ -24,9 +25,9 @@ public class GameController {
         ResponseEntity<?> authError = validarToken(authHeader);
         if (authError != null) return authError;
 
-        List<AbstractMap.SimpleEntry<Game, Double>> recomendaciones = gameService.recomendar(product);
+        List<Document> recomendaciones = gameService.recomendar(product);
         return ResponseEntity.ok(recomendaciones);
-    }*/
+    }
 
     //=================================================================================================================
 

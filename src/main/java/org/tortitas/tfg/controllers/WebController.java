@@ -1,6 +1,7 @@
 package org.tortitas.tfg.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.ai.document.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,7 +74,7 @@ public class WebController {
             session.setAttribute("rol", rol.name()); // y guardamos el tipo de rol tambien
             return "redirect:/home";
         } catch (Exception e) {
-            model.addAttribute("error", "Credenciales incorrectas: " + e.getMessage());
+            model.addAttribute("error", "Credenciales incorrectas");
             return "login";
         }
     }
@@ -88,7 +89,7 @@ public class WebController {
 
     //===========================================================================================================
 
-    /*@GetMapping("/web/recommendations")
+    @GetMapping("/web/recommendations")
     public String recomendar(@RequestParam String product, HttpSession session, Model model) {
         String token = (String) session.getAttribute("token");
         if (token == null || !jwtToken.isTokenValid(token)) {
@@ -96,13 +97,13 @@ public class WebController {
             return "redirect:/login";
         }
 
-        List<AbstractMap.SimpleEntry<Game, Double>> recomendaciones = gameService.recomendar(product);
+        List<Document> recomendaciones = gameService.recomendar(product);
         model.addAttribute("recomendaciones", recomendaciones); //envia los datos al html
         model.addAttribute("query", product); //guarda la busqueda
         model.addAttribute("username", session.getAttribute("username"));
         model.addAttribute("rol", session.getAttribute("rol")); //para mostrar una interfaz u otra dependiendo del rol
         return "home";
-    }*/
+    }
 
     //===========================================================================================================
 
