@@ -43,18 +43,19 @@ public class GameService {
         ));
     }
 
-    //private OllamaEmbeddingModel ollamaEmbeddingModel;
+    @Autowired
+    private OllamaEmbeddingModel ollamaEmbeddingModel;
 
     //Nuevo metodo privado que sirve para vectorizar (como bien indica el nombre) cualquier texto
     // y devolver el embedding. Es lo mismo que teniamos repetido en GameService, GameController y
     // WebController. Ahora simplemente esta una unica vez escrito aqui y el resto que lo llame
 
-    /*private Vector<Double> vectorizar (String texto) {
+    public Vector<Double> vectorizar(String texto) {
         float[] vector = ollamaEmbeddingModel.embed(texto);
         Vector<Double> embeddings = new Vector<>();
         for (float v : vector) embeddings.add((double) v);
         return embeddings;
-    }*/
+    }
 
 
     /*public Vector<Double> vectorizarGame(Game game) {
@@ -62,7 +63,7 @@ public class GameService {
     }*/
 
     // Llama a esto UNA VEZ para cargar el JSON en MongoDB y generar embeddings
-    public void cargarJuegosDesdeJson(String rutaJson) throws Exception {
+    /*public void cargarJuegosDesdeJson(String rutaJson) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         List<Game> juegos = mapper.readValue(
                 new File(rutaJson),
@@ -91,7 +92,7 @@ public class GameService {
                 break;
             }
         }
-    }
+    }*/
 
     //Esto antes se hacia tanto en el Game controller como en el WebController, asi que se mueve aqui
     //y solo tenemos que llamarlo

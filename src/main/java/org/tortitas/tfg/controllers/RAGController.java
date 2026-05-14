@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.tortitas.tfg.models.Game;
@@ -68,9 +69,9 @@ public class RAGController {
     }
 
     @GetMapping("/vectorSearch")
-    public List<String> searchDocuments(String s){
+    public List<Map<String, Object>> searchDocuments(@RequestParam String s){
 
-        /*List<Document> results = vectorStore.similaritySearch(
+        List<Document> results = vectorStore.similaritySearch(
                 SearchRequest.builder().query(s)
                         .topK(2).build()
         );
@@ -78,13 +79,13 @@ public class RAGController {
         return results.stream().map(doc -> Map.of(
                 "content", doc.getFormattedContent(),
                 "metadata", doc.getMetadata()
-        )).collect(Collectors.toList());*/
+        )).collect(Collectors.toList());
 
 
 
-        MongoClient mongoClient = MongoClients.create(uri);
-        MongoDatabase database = mongoClient.getDatabase("sample_mflix");
-        MongoCollection<org.bson.Document> collection = database.getCollection("embedded_movies");
+        /*MongoClient mongoClient = MongoClients.create(uri);
+        MongoDatabase database = mongoClient.getDatabase("PruebaMongo");
+        MongoCollection<org.bson.Document> collection = database.getCollection("vector_index");
 
 
         List<Double> queryVector = gameService.vectorizar("jueguitos de los 90");
@@ -109,6 +110,6 @@ public class RAGController {
         collection.aggregate(pipeline)
                 .forEach(doc -> l.add(doc.toJson()));
 
-        return l;
+        return l;*/
     }
 }
