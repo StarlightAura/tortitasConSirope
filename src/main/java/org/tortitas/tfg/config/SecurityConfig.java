@@ -24,6 +24,7 @@ public class SecurityConfig {
                         .requestMatchers("/", "/login", "/web/signin", "/web/signup").permitAll()
                         .requestMatchers("/home", "/web/**").permitAll()
                         .requestMatchers("/api/**").permitAll() //cambio necesario para los endpoint de los controller game y web
+                        .requestMatchers("/ai/**").permitAll()
                 );
         return http.build();
     }

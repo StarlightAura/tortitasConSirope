@@ -26,7 +26,7 @@ public class GameService {
     // y devolver el embedding. Es lo mismo que teniamos repetido en GameService, GameController y
     // WebController. Ahora simplemente esta una unica vez escrito aqui y el resto que lo llame
 
-    private Vector<Double> vectorizar (String texto) {
+    public Vector<Double> vectorizar (String texto) {
         float[] vector = ollamaEmbeddingModel.embed(texto);
         Vector<Double> embeddings = new Vector<>();
         for (float v : vector) embeddings.add((double) v);
