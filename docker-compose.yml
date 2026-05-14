@@ -1,4 +1,18 @@
 services:
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+    devices:
+      # kfd and dri device access needed for AMDGPU ROCm support to work
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+
+
   springapp:
     container_name: springapp
     image: tortitas-con-sirope:1.0.0
@@ -17,9 +31,14 @@ services:
       - SPRING_AUTOCONFIGURE_EXCLUDE=org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
       - SPRING_AI_OLLAMA_BASE_URL=${OLLAMA_URL}
     depends_on:
+      - ollama
       - games
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: always
+
+
+
   games:
     container_name: games
     image: postgres
@@ -34,11 +53,3 @@ services:
       - ./sql/postgres_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
       - ./sql/postgres_data.sql:/docker-entrypoint-initdb.d/02_data.sql
     restart: always
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - 11434:11434
-    pull_policy: always
-    tty: true
-    restart: unless-stopped
