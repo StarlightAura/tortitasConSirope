@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.Vector;
 
 @JsonIgnoreProperties(ignoreUnknown = true)// con esto ignora campos que no estan en el .json
@@ -26,17 +27,17 @@ public class Game {
     public String name;
     public String description;
     public int full_price;
-    public String developers;
-    public String languages;
-    public String genres;
-    public String tags;
-    public Vector<Double> embeddings;
+    public List<String> developers;
+    public List<String> languages;
+    public List<String> genres;
+    public List<String> tags;
+    //public Vector<Double> embeddings;
 
-    public org.springframework.ai.document.Document game2document(){
+    /*public org.springframework.ai.document.Document game2document(){
         String juegosContent = String.format(
                 "%s. %s. Genres: %s. Tags: %s. Developers: %s",
                 this.name, this.description, this.genres, this.tags, this.developers
         );
         return new org.springframework.ai.document.Document(juegosContent);
-    }
+    }*/
 }

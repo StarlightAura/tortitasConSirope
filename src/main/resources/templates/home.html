@@ -42,12 +42,15 @@
             <p class="results-header">Tus próximas aventuras:</p>
             <div th:each="rec : ${recomendaciones}" class="result-item">
                 <div>
-                    <strong th:text="${rec.key.name}"></strong>
-                    <span th:text="' (' + ${#numbers.formatDecimal(rec.value, 0, 0)} + '%)'"></span>
+                    <strong th:text="${rec.metadata['name']}"></strong>
                 </div>
-                <a th:href="${rec.key.store_url}" target="_blank">
+                <a th:if="${rec.metadata['store_url'] != null and rec.metadata['store_url'] != ''}"
+                   th:href="${rec.metadata['store_url']}" target="_blank">
                     Ver en la tienda
                 </a>
+                <span th:unless="${rec.metadata['store_url'] != null and rec.metadata['store_url'] != ''}">
+                    Sin enlace
+                </span>
             </div>
         </div>
     </div>
