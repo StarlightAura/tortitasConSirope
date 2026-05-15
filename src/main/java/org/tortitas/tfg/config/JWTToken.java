@@ -71,10 +71,4 @@ public class JWTToken {
         }
     }
 
-    /*
-    URLS CON MÁS INFO
-    https://www.descope.com/learn/post/jwt-claims
-    https://www.baeldung.com/spring-security-thymeleaf
-    aqui se explica mejor -> https://www.arquitecturajava.com/el-principio-dry-y-la-encapsulacion/
-*/
 }
