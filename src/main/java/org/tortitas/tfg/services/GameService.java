@@ -15,14 +15,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class GameService {
-
     @Autowired
     private MongoDBAtlasVectorStore vectorStore;
 
     public Document game2document(Game game){
-
         Map<String, Object> metadata = new HashMap<>();
-        
         metadata.put("sid", game.sid);
         metadata.put("name", game.name != null ? game.name : "");
         metadata.put("store_url", game.store_url != null ? game.store_url : "");
@@ -36,7 +33,6 @@ public class GameService {
         return new Document(game.name, metadata);
     }
 
-    // Llama a esto UNA VEZ para cargar el JSON en MongoDB y generar embeddings
     public void cargarJuegosDesdeJson(String rutaJson) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         List<Game> juegos = mapper.readValue(
@@ -44,7 +40,6 @@ public class GameService {
                 new TypeReference<List<Game>>() {}
         );
         System.out.println("Juegos leídos del JSON: " + juegos.size());
-
 
         List<Document> docs = juegos.stream()
                 .map(this::game2document)
@@ -68,6 +63,9 @@ public class GameService {
     //Esto antes se hacia tanto en el Game controller como en el WebController, asi que se mueve aqui
     //y solo tenemos que llamarlo
     public void insertarGame (Game game) {
+        if (game.name == null || game.name.isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+        }
 
         List<Document> existe = vectorStore.similaritySearch(SearchRequest.builder()
                 .query(game.name).topK(1).filterExpression("sid == " + game.sid).build());

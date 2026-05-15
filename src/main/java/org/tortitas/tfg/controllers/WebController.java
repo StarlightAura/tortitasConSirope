@@ -11,7 +11,6 @@ import org.tortitas.tfg.config.JWTToken;
 import org.tortitas.tfg.models.Rol;
 import org.tortitas.tfg.services.GameService;
 import org.tortitas.tfg.services.UserService;
-import java.util.AbstractMap;
 import java.util.List;
 
 @Controller
@@ -20,36 +19,34 @@ public class WebController {
     @Autowired private UserService userService;
     @Autowired private JWTToken jwtToken;
 
-    //===========================================================================================================
+    @ModelAttribute
+    public void addAttributes(HttpSession session, Model model) {
+        if (session.getAttribute("token") != null) {
+            model.addAttribute("username", session.getAttribute("username"));
+            model.addAttribute("rol", session.getAttribute("rol"));
+        }
+    }
 
-    @GetMapping("/")
+    private boolean isSessionInvalid(HttpSession session) {
+        String token = (String) session.getAttribute("token");
+        return token == null || !jwtToken.isTokenValid(token);
+    }
+    //===========================================================================================================
+    @GetMapping({"/", "/login"})
     public String index(HttpSession session) {
         // Si la sesion esta iniciada va directo al home
-        if (session.getAttribute("token") != null) return "redirect:/home";
-        return "redirect:/login"; //sino te logeas
-    }
-
-    //===========================================================================================================
-
-    @GetMapping("/login")
-    public String loginPage(HttpSession session) {
-        if (session.getAttribute("token") != null) return "redirect:/home"; //si ya estas logeado pues al home
+        if (session.getAttribute("token") != null) {
+            return "redirect:/home";
+        }
         return "login"; //sino te logeas
     }
-
     //===========================================================================================================
-
     @GetMapping("/home")
     public String homePage(HttpSession session, Model model) {
-        if (session.getAttribute("token") == null) return "redirect:/login"; //mas de lo mismo, sin logearte no entras
-
-        model.addAttribute("username", session.getAttribute("username")); //se pasa el username al thymeleaf
-        model.addAttribute("rol", session.getAttribute("rol")); // y ahora tambien el rol que tiene el querido usuario
+        if (isSessionInvalid(session)) return "redirect:/login";
         return "home";
     }
-
     //===========================================================================================================
-
    @PostMapping("/web/signup")
     public String signup(@RequestParam String nombreUser, @RequestParam String password, Model model) {
         try {
@@ -60,12 +57,9 @@ public class WebController {
         }
         return "login";
     }
-
     //===========================================================================================================
-
     @PostMapping("/web/signin")
     public String signin(@RequestParam String nombreUser, @RequestParam String password, HttpSession session, Model model){
-
         try {
             String token = userService.verificarSignin(nombreUser, password);
             Rol rol = userService.obtenerRol(nombreUser);
@@ -78,60 +72,38 @@ public class WebController {
             return "login";
         }
     }
-
     //===========================================================================================================
-
     @GetMapping("/web/logout")
     public String logout(HttpSession session) {
         session.invalidate(); //borra token y user
         return "redirect:/login"; //vuelves al login
     }
-
     //===========================================================================================================
-
     @GetMapping("/web/recommendations")
     public String recomendar(@RequestParam String product, HttpSession session, Model model) {
-        String token = (String) session.getAttribute("token");
-        if (token == null || !jwtToken.isTokenValid(token)) {
-            session.invalidate();
-            return "redirect:/login";
-        }
-
+        if (isSessionInvalid(session)) return "redirect:/login";
         List<Document> recomendaciones = gameService.recomendar(product);
         model.addAttribute("recomendaciones", recomendaciones); //envia los datos al html
         model.addAttribute("query", product); //guarda la busqueda
-        model.addAttribute("username", session.getAttribute("username"));
-        model.addAttribute("rol", session.getAttribute("rol")); //para mostrar una interfaz u otra dependiendo del rol
         return "home";
     }
-
     //===========================================================================================================
-
     @PostMapping("/web/products")
     public String insertarJuego(Game juego, HttpSession session, Model model) {
-        String token = (String) session.getAttribute("token");
-        if (token == null || !jwtToken.isTokenValid(token)) {
-            return "redirect:/login";
-        }
-
-        String rol = (String) session.getAttribute("rol");
-        if (!"ADMIN".equals(rol)) {
-            model.addAttribute("errorRol", "¿Pero tú quién eres?");
-            return "home";
-        }
-
+        if (isSessionInvalid(session)) return "redirect:/login";
         try {
-
+            String token = (String) session.getAttribute("token");
+            String rol = jwtToken.getRolFromToken(token);
+            if (!"ADMIN".equals(rol)) {
+                model.addAttribute("errorRol", "¿Pero tú quién eres?");
+                return "home";
+            }
             gameService.insertarGame(juego);
             model.addAttribute("successInsert", "Juego \"" + juego.name + "\" insertado correctamente.");
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("errorInsert", e.getMessage());
         } catch (Exception e) {
             model.addAttribute("errorInsert", "Error al insertar");
         }
-
-        model.addAttribute("username", session.getAttribute("username"));
-        model.addAttribute("rol", rol);
         return "home";
     }
+
 }

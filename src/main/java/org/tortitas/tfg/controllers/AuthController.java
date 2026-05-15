@@ -9,11 +9,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
     @Autowired private UserService userService;
 
-    //El requestbody pilla el json que llega en la peticion y lo convierte a un map,
-    // asi se pueden coger los valores
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Map<String, String> body) {
         ResponseEntity<?> response;
@@ -26,13 +23,10 @@ public class AuthController {
         return response;
     }
 
-    //Esto lo he dejado casi igual, ya que hace lo mismo que el de arriba, recibe el nombreuser y password
-    //del cuerpo del json
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody Map<String, String> creds){
         ResponseEntity<?> response;
         try {
-            //se validan las creds y genera el jwt
             String token = userService.verificarSignin(creds.get("nombreUser"), creds.get("password"));
             response = ResponseEntity.ok(Map.of("token", token));
         }catch (Exception e) {
