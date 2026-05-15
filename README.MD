@@ -1,6 +1,10 @@
 # Sirope Games
 Motor de recomendación de videojuegos basado en IA.
 
+###Descripción del proyecto
+Sirope Games es un backend desarrollado en Java con Spring Boot que expone una API REST para gestionar un catálogo de videojuegos y ofrecer recomendación personalizadas. El sistema utiliza RAG con embeddings generados por Ollama y almacenados en MongoDB Atlas Vector Search, combinado con el algoritmo de similitud coseno para calcular la afinidad entre la búsqueda del usuario y los prodcutos del catálogo.
+El acceso al servicio de recomendaciones está protegido mediante JWT(JSON Web Tokens), implementado con la biblioteca Jose4J.
+
 ## Características
 
 ### Bases de datos separadas
@@ -28,7 +32,6 @@ Uso de tokens seguros JWT para la autenticación de usuarios. Biblioteca Jose4J.
 ### Postman
 
 Script de Postman para la verificación de la funcionalidad correcta del programa.
-El script se encuentra en la carpeta "postman-tests" y esta listo para poder importarse en postman y ejecutarse.
 
 | Endpoint                                                       | Descripción                                 |
 |----------------------------------------------------------------|---------------------------------------------|
@@ -36,6 +39,11 @@ El script se encuentra en la carpeta "postman-tests" y esta listo para poder imp
 |http://localhost:8787/api/recommendations?product=dark%20souls | Fallo sin token                             
 |http://localhost:8787/api/products    | Inserción de producto con vectorización, usando token válido |
 |http://localhost:8787/api/recommendations?product=dark%20souls  | Recomendaciones con token válido            |
+
+####Cómo importar y ejecutar
+1. Abrir Postamn.
+2.File -> Import -> seleccionar el archivo .json de la carpeta postman-tests.
+3.Ejecutar los tests en orden.
 
 ### Spring Boot
 
@@ -66,3 +74,6 @@ Teníamos nuestro bot llamado @SiropeGamersBot en Telegram y usando los siguient
 ---
 
 # TODO: Instrucciones
+###1. Clonar el repositorio
+git clone https://github.com/StarlightAura/tortitasConSirope.git
+cd sirope-games
