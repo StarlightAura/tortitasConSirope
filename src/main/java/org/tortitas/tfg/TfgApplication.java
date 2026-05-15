@@ -17,12 +17,12 @@ import java.util.List;
 @SpringBootApplication
 @EnableMongoRepositories
 public class TfgApplication {
-    @Autowired
-    GameRepository gameRepository;
+   // @Autowired
+    //GameRepository gameRepository;
     @Autowired
     private GameService gameService;
-    @Autowired
-    private VectorStore vectorStore;
+   // @Autowired
+    //private VectorStore vectorStore;
 
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);

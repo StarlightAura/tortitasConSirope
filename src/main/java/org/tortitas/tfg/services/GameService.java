@@ -13,26 +13,36 @@ import org.tortitas.tfg.models.Game;
 import org.tortitas.tfg.repositories.GameRepository;
 
 import java.io.File;
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class GameService {
-    @Autowired
-    private GameRepository gameRepository;
+   // @Autowired
+   // private GameRepository gameRepository;
     @Autowired
     private VectorStore vectorStore;
 
 
     public Document game2document(Game game){
         String juegosContent = String.format(
-                "%s. %s. Genres: %s. Tags: %s. Developers: %s",
-                game.name, game.description, game.genres, game.tags, game.developers
+                "Nombre: %s. Descripción: %s. Géneros: %s. Tags: %s. Desarrolladores: %s. Puntuación: %d. Precio: %d",
+                game.name, game.description, game.genres, game.tags, game.developers, game.store_uscore, game.full_price
         );
-        return new Document(juegosContent, Map.of(
+
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put("sid", game.sid);
+        metadata.put("name", game.name != null ? game.name : "");
+        metadata.put("store_url", game.store_url != null ? game.store_url : "");
+        metadata.put("genres", game.genres != null ? game.genres : List.of());
+        metadata.put("tags", game.tags != null ? game.tags : List.of());
+        metadata.put("store_uscore",game.store_uscore);
+        metadata.put("full_price", game.full_price);
+        metadata.put("description", game.description != null ? game.description : "");
+        metadata.put("developers", game.developers != null ? game.developers : List.of());
+
+        return new Document(juegosContent, metadata);
+        /*return new Document(juegosContent, Map.of(
                 "sid", game.sid,
                 "name", game.name !=null ? game.name: "",
                 "store_url", game.store_url !=null ? game.store_url: "",
@@ -40,7 +50,7 @@ public class GameService {
                 "tags", game.tags !=null ? game.tags: "",
                 "store_uscore", game.store_uscore,
                 "full_price", game.full_price
-        ));
+        ));*/
     }
 
     @Autowired
@@ -70,17 +80,18 @@ public class GameService {
                 new TypeReference<List<Game>>() {}
         );
         System.out.println("Juegos leídos del JSON: " + juegos.size());
-        for (Game juego : juegos) {
+
+        /*for (Game juego : juegos) {
             gameRepository.save(juego);
             System.out.println("Guardado: " + juego.name);
-        }
+        }*/
 
         List<Document> docs = juegos.stream()
                 .map(this::game2document)
                 .collect(Collectors.toList());
 
         System.out.println("Total docs a insertar: " + docs.size());
-        int batchSize = 50;
+        int batchSize = 5;
         for (int i = 0; i < docs.size(); i += batchSize) {
             List<Document> lote = docs.subList(i, Math.min(i + batchSize, docs.size()));
             try {
@@ -97,12 +108,20 @@ public class GameService {
     //Esto antes se hacia tanto en el Game controller como en el WebController, asi que se mueve aqui
     //y solo tenemos que llamarlo
     public void insertarGame (Game game) {
-        if (gameRepository.existsById(game.sid)) {
+
+        List<Document> existe = vectorStore.similaritySearch(SearchRequest.builder()
+                .query(game.name).topK(1).filterExpression("sid == " + game.sid).build());
+
+        if (!existe.isEmpty()) {
             throw new IllegalArgumentException("El ID " + game.sid + " ya existe.");
         }
-
-        gameRepository.save(game);
         vectorStore.add(List.of(game2document(game)));
+
+       /* if (gameRepository.existsById(game.sid)) {
+            throw new IllegalArgumentException("El ID " + game.sid + " ya existe.");
+        }
+        gameRepository.save(game);
+        vectorStore.add(List.of(game2document(game)));*/
     }
 
     public List<Document> recomendar(String query) {
@@ -112,6 +131,22 @@ public class GameService {
                         .topK(5)
                         .build()
         );
+    }
+
+    /*public List<Game> buscarName(String name) {
+        return gameRepository.findByName(name);
+    }
+    public void eliminarGames(int sid) {
+        Game game = gameRepository.findById(sid).orElseThrow(() -> new IllegalArgumentException("El juego con ID " + sid + " no existe."));
+        gameRepository.deleteById(sid);
+
+        List<Document> doc = vectorStore.similaritySearch(SearchRequest.builder()
+                .query(game.name)
+                .topK(10)
+                .build());
+        doc.stream()
+                .filter(d -> d.getMetadata().get("sid") != null && d.getMetadata().get("sid").toString().equals(String.valueOf(sid)))
+                .forEach(d -> vectorStore.delete(List.of(d.getId())));
     }
 
     // Esto es lo que llama el bot con la query del usuario

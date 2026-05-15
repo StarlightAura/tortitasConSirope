@@ -17,7 +17,7 @@ import java.util.Vector;
 @Builder
 @Data
 
-@Document("GameItem")
+//@Document("GameItem")
 public class Game {
     @Id
     public int sid;
