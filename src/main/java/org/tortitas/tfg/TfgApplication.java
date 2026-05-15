@@ -27,10 +27,10 @@ public class TfgApplication {
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);
     }
-    /*@Bean
+    @Bean
     public CommandLineRunner cargarDatos() {
         return args -> {
             gameService.cargarJuegosDesdeJson("src/main/resources/out.json");
         };
-    }*/
+    }
 }

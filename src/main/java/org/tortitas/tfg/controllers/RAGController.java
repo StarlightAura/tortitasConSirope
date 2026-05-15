@@ -69,18 +69,20 @@ public class RAGController {
     }
 
     @GetMapping("/vectorSearch")
-    public List<Map<String, Object>> searchDocuments(@RequestParam String s){
+    public List<Document> searchDocuments(@RequestParam String s){
 
         List<Document> results = vectorStore.similaritySearch(
                 SearchRequest.builder().query(s)
                         .topK(2).build()
         );
 
-        return results.stream().map(doc -> Map.of(
+        /*return results.stream().map(doc -> Map.of(
                 "content", doc.getFormattedContent(),
                 "metadata", doc.getMetadata()
-        )).collect(Collectors.toList());
+        )).collect(Collectors.toList());*/
 
+
+        return results;
 
 
         /*MongoClient mongoClient = MongoClients.create(uri);

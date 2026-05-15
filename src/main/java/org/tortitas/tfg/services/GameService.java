@@ -63,7 +63,7 @@ public class GameService {
     }*/
 
     // Llama a esto UNA VEZ para cargar el JSON en MongoDB y generar embeddings
-    /*public void cargarJuegosDesdeJson(String rutaJson) throws Exception {
+    public void cargarJuegosDesdeJson(String rutaJson) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         List<Game> juegos = mapper.readValue(
                 new File(rutaJson),
@@ -92,7 +92,7 @@ public class GameService {
                 break;
             }
         }
-    }*/
+    }
 
     //Esto antes se hacia tanto en el Game controller como en el WebController, asi que se mueve aqui
     //y solo tenemos que llamarlo
