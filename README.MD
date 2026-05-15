@@ -1,7 +1,7 @@
 # Sirope Games
 Motor de recomendación de videojuegos basado en IA.
 
-###Descripción del proyecto
+### Descripción del proyecto
 Sirope Games es un backend desarrollado en Java con Spring Boot que expone una API REST para gestionar un catálogo de videojuegos y ofrecer recomendación personalizadas. El sistema utiliza RAG con embeddings generados por Ollama y almacenados en MongoDB Atlas Vector Search, combinado con el algoritmo de similitud coseno para calcular la afinidad entre la búsqueda del usuario y los prodcutos del catálogo.
 El acceso al servicio de recomendaciones está protegido mediante JWT(JSON Web Tokens), implementado con la biblioteca Jose4J.
 
@@ -40,7 +40,7 @@ Script de Postman para la verificación de la funcionalidad correcta del program
 |http://localhost:8787/api/products    | Inserción de producto con vectorización, usando token válido |
 |http://localhost:8787/api/recommendations?product=dark%20souls  | Recomendaciones con token válido            |
 
-####Cómo importar y ejecutar
+#### Cómo importar y ejecutar
 1. Abrir Postamn.
 2.File -> Import -> seleccionar el archivo .json de la carpeta postman-tests.
 3.Ejecutar los tests en orden.
@@ -74,6 +74,6 @@ Teníamos nuestro bot llamado @SiropeGamersBot en Telegram y usando los siguient
 ---
 
 # TODO: Instrucciones
-###1. Clonar el repositorio
+### 1. Clonar el repositorio
 git clone https://github.com/StarlightAura/tortitasConSirope.git
 cd sirope-games
