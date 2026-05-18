@@ -38,7 +38,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired private JWTToken jwtToken;
 
     /**
-     *Metdo principal del filtro que intercepta la peticion HTTP entrante.
+     *Metodo principal del filtro que intercepta la peticion HTTP entrante.
      *<p>
      *Busca el token JWT tanto en las cabeceras (si viene de una peticion API REST)
      *como en la sesion del servidor (si el usuario esta navegando por las vistas web de Thymeleaf).

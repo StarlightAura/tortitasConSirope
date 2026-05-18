@@ -34,9 +34,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                //Desactivamos la protección CSRF al gestionar la seguridad mediante tokens JWT.
+                //Desactivamos la proteccion CSRF al gestionar la seguridad mediante tokens JWT.
                 .csrf(csrf -> csrf.disable())
-                //Deshabilitamos el formulario de inicio de sesión por defecto de Spring.
+                //Deshabilitamos el formulario de inicio de sesion por defecto de Spring.
                 .formLogin(form -> form.disable())
                 .exceptionHandling(ex -> ex
                         // Control por si el usuario no esta logueado en absoluto (Falta el token)

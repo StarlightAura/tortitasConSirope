@@ -22,8 +22,6 @@ import org.tortitas.tfg.services.GameService;
 @SpringBootApplication
 @EnableMongoRepositories //Habilita de forma explicita el uso de repositorios de Spring Data MongoDB
 public class TfgApplication {
-    /**Conexion directa con el almacenamiento vectorial de MongoDB Atlas.*/
-    @Autowired MongoDBAtlasVectorStore vectorStore;
 
     /**Inyectamos el servicio de juegos para gestionar la lectura e insercion por lotes del JSON.*/
     @Autowired GameService gameService;

@@ -96,7 +96,7 @@ public class JWTToken {
     }
 
     /**
-     *Metdo auxiliar para configurar las reglas de validacion de los tokens.
+     *Metodo auxiliar para configurar las reglas de validacion de los tokens.
      *<p>
      *Aqui definimos que cosas le vamos a exigir a un token para darlo por bueno,
      *usando siempre la clave publica para verificar la autenticidad de la firma.

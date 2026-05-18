@@ -11,7 +11,7 @@ import org.tortitas.tfg.services.GameService;
 /**
  *Controlador REST para hacer pruebas y consultas directas con el motor de IA (RAG).
  *<p>
- *Este componente acua como un endpoint tecnico de desarrollo. Nos permite interactuar
+ *Este componente actua como un endpoint tecnico de desarrollo. Nos permite interactuar
  *directamente con el Vector Store de MongoDB Atlas y ver como el modelo de Ollama
  *transforma los textos de los juegos en embeddings (es decir, arrays de numeros tipo float).
  *</p>

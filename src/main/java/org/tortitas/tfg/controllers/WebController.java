@@ -149,7 +149,7 @@ public class WebController {
     /**
      *Procesa la insercion de un nuevo videojuego por parte de un administrador.
      *@param juego Objeto mapeado automaicamente con los datos del formulario.
-     *@param session La sesión del usuario.
+     *@param session La sesion del usuario.
      *@param model Modelo para avisar si el juego se inserto bien o si hubo un error.
      *@return Recarga el "home" manteniendo los avisos de exito o error en los paneles de administracion.
      */

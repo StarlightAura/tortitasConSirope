@@ -42,13 +42,13 @@ public class GameController {
     }
 
     /**
-     *Endpoint para la insercion y vectorización de un nuevo videojuego en el catalogo de juegos.
+     *Endpoint para la insercion y vectorizacion de un nuevo videojuego en el catalogo de juegos.
      *<p>
      *Ruta protegida por rol, que recibe los datos de un videojuego en formato JSON, gestiona su
      *almacenamiento en la base de datos documental de MongoDB y genera su embedding para
      *integrarlo inmediatamente en el almacenamiento vectorial de Atlas.
      *</p>
-     *@param juego Objeto que contiene la información del videojuego a registrar.
+     *@param juego Objeto que contiene la informacion del videojuego a registrar.
      *@return Mensaje de exito si se procesa correctamente, una respuesta HTTP 400 si el identificador (sid)
      *ya existe, o una respuesta HTTP 500 ante fallos del servidor de MongoDB o del modelo de IA.
      */

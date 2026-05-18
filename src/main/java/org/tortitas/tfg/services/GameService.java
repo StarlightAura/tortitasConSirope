@@ -41,7 +41,7 @@ public class GameService {
     }
 
     /**
-     *Metdo auxiliar para transformar un objeto de tipo Game a un Document de Spring AI.
+     *Metodo auxiliar para transformar un objeto de tipo Game a un Document de Spring AI.
      *<p>
      *Mapea todas las propiedades de nuestro juego dentro del mapa de metadatos del Documento
      * y le pone filtros de seguridad para evitar nulos.
@@ -72,7 +72,7 @@ public class GameService {
      *<p>
      *Se utiliza Jackson para parsear el archivo, que convierte cada juego a un Document de Spring AI
      *y los va insertando en porciones fijas (llamadas batches) de 5 en 5. De esta forma podiamos ir
-     * controlando como se iba subiendo.
+     *controlando como se iba subiendo.
      *</p>
      *@param rutaJson ruta del archivo .json.
      *@throws Exception Si el archivo no existe o hay problemas de formato al leerlo.
