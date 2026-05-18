@@ -1,15 +1,13 @@
 /*CONFIGURACION DE BODY Y VARIABLES*/
 :root {
-    /*COLORES*/
     --dc-red: #FF003F;
     --dc-blue: #0055FF;
     --dc-yellow: #FFE600;
     --dc-purple: #9D00FF;
     --dc-cyan: #00FFFF;
     --dc-bg: #001133;
-    /*FUENTES*/
-    --font-title: 'Bangers', cursive; /* Estilo circo */
-    --font-body: 'Jua', sans-serif;   /* Estilo burbuja */
+    --font-title: 'Bangers', cursive;
+    --font-body: 'Jua', sans-serif;
 }
 
 * {
@@ -21,14 +19,14 @@
 
 body {
     background-color: #FECE00;
-    min-height: 100vh; /* Altura min de toda la pantalla */
+    min-height: 100vh;
     font-family: var(--font-body);
     color: #fff;
     padding-bottom: 50px;
     overflow-x: hidden;
 }
 
-/*CONFIGURACION DE FONDOS SEGUN EL ROL*/
+/*FONDOS SEGUN ROL*/
 .bg-admin, .bg-user {
     background-size: cover;
     background-position: center center;
@@ -37,13 +35,16 @@ body {
 }
 
 .bg-admin {
-    background-image: url('../img/despacho.png');
-}
-.bg-user {
-    background-image: url('../img/TADC2.jpg');
+    background-image: url('../img/despachoCaine.png');
+    background-color: #1a0033;
 }
 
-/*BARRA DE NAV*/
+.bg-user {
+    background-image: url('../img/salaPrincipal.jpg');
+    background-color: #000c24;
+}
+
+/*NAV*/
 nav {
     background: var(--dc-bg);
     border-bottom: 10px solid;
@@ -68,6 +69,11 @@ nav {
     color: white;
 }
 
+.nav-actions {
+    display: flex;
+    align-items: center;
+}
+
 .nav-user {
     font-size: 1.4rem;
     color: var(--dc-cyan);
@@ -83,8 +89,7 @@ nav {
     border: 4px solid white;
     color: white;
     padding: 8px 18px;
-    border-radius: 50px; /* Forma de pasti, pedro referencia */
-    cursor: pointer;
+    border-radius: 50px;
     font-size: 1.5rem;
     letter-spacing: 3px;
     text-decoration: none;
@@ -98,7 +103,7 @@ nav {
     box-shadow: 0 0 15px var(--dc-cyan);
 }
 
-/*CARDS Y ALERTAS*/
+/*CONTAINER*/
 .container {
     max-width: 800px;
     margin: 50px auto;
@@ -117,7 +122,7 @@ nav {
     gap: 10px;
 }
 
-/* Tarjetas tipo 3d semi trans */
+/*CARDS*/
 .card {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(7px);
@@ -125,7 +130,6 @@ nav {
     border-radius: 30px;
     padding: 30px;
     margin-bottom: 40px;
-    /* Efecto semi trans */
     box-shadow:
             10px 10px 0px rgba(0,0,0,0.3),
             inset 5px 5px 10px rgba(255,255,255,0.2),
@@ -133,9 +137,8 @@ nav {
     position: relative;
 }
 
-/* Decoracion de esquina en tarjetas */
 .card::after {
-    content: '♚'; /* kinger my beloved */
+    content: '♚';
     position: absolute;
     top: -20px;
     right: -20px;
@@ -152,7 +155,7 @@ nav {
     box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
 }
 
-/* Decoration para las posibles alerts */
+/*ALERTAS*/
 .alert {
     font-family: var(--font-title);
     padding: 15px;
@@ -181,6 +184,10 @@ nav {
 .search-row {
     display: flex;
     gap: 15px;
+}
+
+.form-spacing-bottom {
+    margin-bottom: 20px;
 }
 
 input[type="text"],
@@ -227,7 +234,6 @@ textarea:focus {
     text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
 }
 
-/* Botón Primario (Rojo pomni) */
 .btn-primary {
     background: var(--dc-red);
     box-shadow: 0 8px 0 #990026, 0 8px 10px rgba(0,0,0,0.5);
@@ -237,7 +243,6 @@ textarea:focus {
     background: #ff3366;
 }
 
-/* Botón Secundario (Azul reemplazo de caine) */
 .btn-secondary {
     background: var(--dc-blue);
     box-shadow: 0 8px 0 #003399, 0 8px 10px rgba(0,0,0,0.5);
@@ -247,7 +252,6 @@ textarea:focus {
     background: #3377ff;
 }
 
-/*EDECTO BOTONES*/
 .btn:active {
     transform: translateY(4px);
     box-shadow: 0 4px 0 #990026, 0 4px 6px rgba(0,0,0,0.5);
@@ -257,9 +261,23 @@ textarea:focus {
     box-shadow: 0 4px 0 #003399, 0 4px 6px rgba(0,0,0,0.5);
 }
 
-/*RESULTADOS DE LA RECOMENDACION*/
+.btn-full {
+    width: 100%;
+}
+
+.btn-submit-insert {
+    margin-top: 15px;
+    background: var(--dc-purple);
+    box-shadow: 0 8px 0 #6600cc, 0 8px 10px rgba(0,0,0,0.5);
+}
+
+.btn-submit-insert:hover {
+    background: #b300ff;
+}
+
+/*RESULTADOS*/
 .results-container {
-    margin-top: 30px;
+    margin-top: 25px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -291,7 +309,6 @@ textarea:focus {
     gap: 20px;
 }
 
-/*HOVER DE LA CAJA*/
 .result-item:hover {
     transform: scale(1.03) translateX(10px);
     background: var(--dc-bg);
@@ -299,15 +316,13 @@ textarea:focus {
     box-shadow: 0 0 20px var(--dc-cyan);
 }
 
-/*TITULO DE LOS JUEGOS*/
-.result-item strong, .result-item b {
+.result-item strong {
     color: var(--dc-yellow);
     font-size: 1.2rem;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
 
-/*ENLACE PARA VER EL JUEGO EN TIENDA*/
 .result-item a {
     display: inline-block;
     color: var(--dc-cyan);
@@ -329,7 +344,6 @@ textarea:focus {
     transform: translateY(-2px);
 }
 
-/* CIRCULITO A LA DERECHA PARA SIMULAR TICKET MA O MENO*/
 .result-item::before {
     content: '';
     position: absolute;
@@ -343,7 +357,8 @@ textarea:focus {
     border: 4px solid white;
     box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
 }
-/*FORMULARIO DE AÑADIR JUEGO*/
+
+/*FORMULARIO INSERTAR*/
 #insert-form {
     display: none;
     margin-top: 25px;
@@ -367,38 +382,10 @@ textarea:focus {
     margin-bottom: 15px;
 }
 
-/*PARA LOS TITULOS*/
+/*TITULOs*/
 .title-accent-cyan { color: var(--dc-cyan); }
-.title-accent-red  { color: var(--dc-red); }
 
-/*CONTENEDOR NAV DEL LADO DERECHO*/
-.nav-actions {
-    display: flex;
-    align-items: center;
-}
-
-/*CONTENEDOR RESULTADOS BUSQUEDA*/
-.results-container {
-    margin-top: 25px;
-}
-
-/*BOTON CON EL ANCHO COMPLETO*/
-.btn-full {
-    width: 100%;
-}
-
-/*BOTON MORADO FORMULARIO*/
-.btn-submit-insert {
-    margin-top: 15px;
-    background: var(--dc-purple);
-    box-shadow: 0 8px 0 #6600cc, 0 8px 10px rgba(0,0,0,0.5);
-}
-
-.btn-submit-insert:hover {
-    background: #b300ff;
-}
-
-/*VENTANA DE CARGA*/
+/*LOADING OVERLAY*/
 #loading-overlay {
     display: none;
     position: fixed;
@@ -454,27 +441,49 @@ textarea:focus {
     letter-spacing: 1px;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+/*INSPECCIÓN DE JUEGOS */
+.inspect-panel {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    border-radius: 20px;
+    border: 3px dashed var(--dc-cyan);
+    text-align: left;
 }
 
-/*EL SPINNER QUE DA VUELTAS Y TAL*/
-.spinner {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    border: 3px solid rgba(255,255,255,0.4);
-    border-top-color: white;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
+.inspect-name {
+    font-family: var(--font-title);
+    font-size: 1.8rem;
+    color: var(--dc-yellow);
+    margin-bottom: 10px;
 }
 
-.btn-loading {
-    opacity: 0.8;
-    cursor: not-allowed;
+.inspect-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.inspect-link {
+    color: var(--dc-cyan);
+}
+
+.inspect-link-empty {
+    color: #aaa;
+    font-style: italic;
+}
+
+.inspect-desc-title {
+    color: var(--dc-cyan);
+}
+
+.inspect-desc-box {
+    font-size: 0.95rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 5px;
 }
 
 /*ANIMACIONES*/
@@ -483,25 +492,30 @@ textarea:focus {
 }
 
 @keyframes glitch {
-    0%   { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
-    14%  { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
-    15%  { text-shadow: -5px -5px 0 var(--dc-red), 5px 5px 0 var(--dc-blue); }
-    16%  { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
+    0% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
+    14% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
+    15% { text-shadow: -5px -5px 0 var(--dc-red), 5px 5px 0 var(--dc-blue); }
+    16% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
     100% { text-shadow: 3px 3px 0 var(--dc-red), -2px -2px 0 var(--dc-blue); }
 }
 
 @keyframes floatY {
     0%, 100% { transform: translateY(0) rotate(0deg); }
-    50%       { transform: translateY(-10px) rotate(1deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
 }
 
 @keyframes shake {
-    0%   { transform: translate(1px, 1px); }
-    50%  { transform: translate(-1px, -1px); }
+    0% { transform: translate(1px, 1px); }
+    50% { transform: translate(-1px, -1px); }
     100% { transform: translate(1px, -1px); }
 }
 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 @keyframes expandDown {
-    0%   { opacity: 0; transform: translateY(-20px) scaleY(0); }
+    0% { opacity: 0; transform: translateY(-20px) scaleY(0); }
     100% { opacity: 1; transform: translateY(0) scaleY(1); }
 }

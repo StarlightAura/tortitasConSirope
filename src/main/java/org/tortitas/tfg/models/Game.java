@@ -6,38 +6,56 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-import java.util.Vector;
 
-@JsonIgnoreProperties(ignoreUnknown = true)// con esto ignora campos que no estan en el .json
+/**
+ *Modelo de datos que representa a un videojuego dentro de la aplicacion.
+ *<p>
+ *Esta clase sirve para volcar el catalogo desde el archivo JSON a objetos de Java
+ *y para organizar los metadatos de los juegos que luego guardamos en MongoDB Atlas.
+ *</p>
+ *@author Prabhnoor Singh Kaur
+ *@author StarlightAura
+ *@author Laura Martín Martínez
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)//Si el archivo JSON trae campos de mas que no usamos aqui, Jackson los ignora
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
-
-@Document("GameItem")
 public class Game {
+    /**Identificador unico del videojuego (ID de la tienda).*/
     @Id
     public int sid;
-    public String store_url;
-    public int store_uscore;
-    public String published_store;
-    public String name;
-    public String description;
-    public int full_price;
-    public List<String> developers;
-    public List<String> languages;
-    public List<String> genres;
-    public List<String> tags;
-    public Vector<Double> embeddings;
 
-    public org.springframework.ai.document.Document game2document(){
-        String juegosContent = String.format(
-                "%s. %s. Genres: %s. Tags: %s. Developers: %s",
-                this.name, this.description, this.genres, this.tags, this.developers
-        );
-        return new org.springframework.ai.document.Document(juegosContent);
-    }
+    /**Enlace directo a la tienda donde esta publicado el juego.*/
+    public String store_url;
+
+    /**Puntuacion media otorgada por los usuarios en la tienda.*/
+    public Integer store_uscore;
+
+    /**Informacion o fecha de publicacion en la plataforma.*/
+    public String published_store;
+
+    /**Titulo oficial del videojuego.*/
+    public String name;
+
+    /**Descripcion del juego, utilizada por la IA para la busqueda semantica.*/
+    public String description;
+
+    /**Precio total del juego en la tienda.*/
+    public Integer full_price;
+
+    /**Lista de desarrolladores o estudios encargados del juego.*/
+    public List<String> developers;
+
+    /**Idiomas en los que se encuentra disponible el juego.*/
+    public List<String> languages;
+
+    /**Generos principales del juego.*/
+    public List<String> genres;
+
+    /**Etiquetas descriptivas asignadas por la comunidad o la tienda.*/
+    public List<String> tags;
 }

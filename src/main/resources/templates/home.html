@@ -9,12 +9,11 @@
 </head>
 <body th:classappend="${rol == 'ADMIN'} ? 'bg-admin' : 'bg-user'">
 
-<!--LA VENTANITA DE CARGA-->
 <div id="loading-overlay">
     <div class="loading-card">
         <div class="loading-spinner"></div>
         <p class="loading-title">¡BUSCANDO!</p>
-        <p class="loading-subtitle">Explorando el vacío digital...</p>
+        <p class="loading-subtitle">Explorando los lugares reconditos del circo</p>
     </div>
 </div>
 
@@ -28,7 +27,7 @@
 
 <div class="container">
 
-    <p class="section-title">🔍 <span class="title-accent-cyan">Explorar</span> el Vacío</p>
+    <p class="section-title">🔍 <span class="title-accent-cyan">Explorar</span> el Vacio 🔍</p>
     <div class="card card-search">
         <form action="/web/recommendations" method="get" class="search-row">
             <input type="text" name="product"
@@ -42,18 +41,58 @@
             <p class="results-header">Tus próximas aventuras:</p>
             <div th:each="rec : ${recomendaciones}" class="result-item">
                 <div>
-                    <strong th:text="${rec.key.name}"></strong>
-                    <span th:text="' (' + ${#numbers.formatDecimal(rec.value, 0, 0)} + '%)'"></span>
+                    <strong th:text="${rec.metadata['name']}"></strong>
                 </div>
-                <a th:href="${rec.key.store_url}" target="_blank">
+                <a th:if="${rec.metadata['store_url'] != null and rec.metadata['store_url'] != ''}"
+                   th:href="${rec.metadata['store_url']}" target="_blank">
                     Ver en la tienda
                 </a>
+                <span th:unless="${rec.metadata['store_url'] != null and rec.metadata['store_url'] != ''}">
+                    Sin enlace
+                </span>
             </div>
         </div>
     </div>
 
     <div th:if="${rol == 'ADMIN'}">
-        <p class="section-title">➕ <span class="title-accent-red">Añadir</span> Nuevo Integrante</p>
+        <p class="section-title">👁️ <span class="title-accent-cyan">Inspeccionar</span> Entidad por ID 👁️</p>
+        <div class="card">
+            <form action="/web/products/search" method="get" class="search-row form-spacing-bottom" id="form-inspeccionar">
+                <input type="number" name="sid" placeholder="Introduce el ID Digital (sid)" required/>
+                <button type="submit" class="btn btn-secondary">INSPECCIONAR</button>
+            </form>
+
+            <div class="alert alert-error" th:if="${errorBusqueda != null}" th:text="${errorBusqueda}"></div>
+
+            <div th:if="${juegoInspeccionado != null}" class="inspect-panel">
+                <p class="inspect-name" th:text="${juegoInspeccionado.name}"></p>
+
+                <div class="inspect-grid">
+                    <p><strong>ID Digital:</strong> <span th:text="${juegoInspeccionado.sid}"></span></p>
+                    <p><strong>Precio:</strong> <span th:text="${juegoInspeccionado.full_price / 100.0} + ' €'"></span></p>
+                    <p><strong>Puntuacion:</strong> <span th:text="${juegoInspeccionado.store_uscore} + ' pts'"></span></p>
+                    <p>
+                        <strong>Enlace:</strong>
+                        <a th:if="${juegoInspeccionado.store_url != null and juegoInspeccionado.store_url != ''}"
+                           th:href="${juegoInspeccionado.store_url}" target="_blank" class="inspect-link">
+                            Ir a la Tienda
+                        </a>
+                        <span th:unless="${juegoInspeccionado.store_url != null and juegoInspeccionado.store_url != ''}" class="inspect-link-empty">
+                            Sin enlace
+                        </span>
+                    </p>
+                </div>
+
+                <div th:if="${juegoInspeccionado.description != null and juegoInspeccionado.description != ''}">
+                    <strong class="inspect-desc-title">Descripcion:</strong>
+                    <p class="inspect-desc-box" th:text="${juegoInspeccionado.description}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${rol == 'ADMIN'}">
+        <p class="section-title">➕ <span class="title-accent-cyan">Generar</span> Nuevo Juego Integrante ➕</p>
         <div class="card">
             <div class="alert alert-error" th:if="${errorInsert != null}" th:text="${errorInsert}">ERROR EXISTENCIAL</div>
             <div class="alert alert-success" th:if="${successInsert != null}" th:text="${successInsert}">YIPPIEEE</div>
@@ -61,7 +100,7 @@
 
             <button class="btn btn-secondary btn-full"
                     onclick="document.getElementById('insert-form').classList.toggle('visible')">
-                --- ABRIR PANEL DE CONTROL ---
+                ---PANEL DE CONTROL---
             </button>
 
             <div id="insert-form" th:classappend="${(successInsert != null) or (errorInsert != null) or (errorRol != null)} ? 'visible' : ''">
@@ -71,14 +110,14 @@
                         <input type="text"   name="name" placeholder="Nombre del juego *" required/>
                     </div>
                     <div class="form-grid">
-                        <input type="text" name="genres" placeholder="Género (RPG, Caos…)"/>
-                        <input type="text" name="tags" placeholder="Etiquetas (Miedo, Risa…)"/>
+                        <input type="text"   name="store_url" placeholder="URL de la tienda (https://...)"/>
+                        <input type="number" name="full_price" placeholder="Precio (en céntimos: 777 = 7,77€)" required/>
                     </div>
                     <div class="form-full">
-                        <textarea name="description" placeholder="Describe la aventura del juego..."></textarea>
+                        <textarea name="description" placeholder="Describe la aventura del juego..." required></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-full btn-submit-insert">
-                        CONVERTIR EN INTEGRANTE DE SIROPE GAMES
+                        CONVERTIR EN AVENTURA DE SIROPE GAMES
                     </button>
                 </form>
             </div>
@@ -86,9 +125,26 @@
     </div>
 </div>
 <script>
-    document.querySelector('.search-row').addEventListener('submit', function() {
-        document.getElementById('loading-overlay').classList.add('visible');
+    const overlay = document.getElementById('loading-overlay');
+    const loadingTitle = overlay.querySelector('.loading-title');
+    const loadingSubtitle = overlay.querySelector('.loading-subtitle');
+
+    const formRecomendaciones = document.querySelector('.search-row');
+    const formInspeccionar = document.getElementById('form-inspeccionar');
+
+    formRecomendaciones.addEventListener('submit', function() {
+        loadingTitle.textContent = '¡BUSCANDO!';
+        loadingSubtitle.textContent = 'Explorando los lugares recónditos del circo...';
+        overlay.classList.add('visible');
     });
+
+    if (formInspeccionar) {
+        formInspeccionar.addEventListener('submit', function() {
+            loadingTitle.textContent = '¡INSPECCIONANDO!';
+            loadingSubtitle.textContent = 'Extrayendo metadatos del vacio vectorial...';
+            overlay.classList.add('visible');
+        });
+    }
 </script>
 </body>
 </html>

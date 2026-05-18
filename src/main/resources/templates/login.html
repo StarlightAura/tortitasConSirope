@@ -12,7 +12,7 @@
 
 <div class="card">
     <h1>SIROPE GAMES</h1>
-    <p class="subtitle">¡No te abstraigas todavía!</p>
+    <p class="subtitle">¡No te abstraigas todavia!</p>
 
     <div class="alert alert-error" th:if="${error}" th:text="${error}">ERROR EXISTENCIAL</div>
     <div class="alert alert-success" th:if="${success}" th:text="${success}">ENTRADA CONCEDIDA</div>
@@ -21,20 +21,20 @@
         <label>Sujeto</label>
         <input type="text" name="nombreUser" placeholder="Nombre de usuario..." required/>
 
-        <label>Código Secreto</label>
-        <input type="password" name="password" placeholder="Contraseña..." required/>
+        <label>Clave</label>
+        <input type="password" name="password" placeholder="Clave secreta..." required/>
 
         <button type="submit" class="btn btn-primary">¡ENTRAR AL SHOW!</button>
     </form>
 
-    <div class="divider">--- ¿NUEVA ENTIDAD? ---</div>
+    <div class="divider">¿¿¿¿NUEVA ENTIDAD????</div>
 
     <form action="/web/signup" method="post">
         <div style="display: flex; gap: 10px;">
-            <input type="text" name="nombreUser" placeholder="Usuario" required/>
-            <input type="password" name="password" placeholder="Clave" required/>
+            <input type="text" name="nombreUser" placeholder="Nuevo sujeto" required/>
+            <input type="password" name="password" placeholder="Clave Secreta" required/>
         </div>
-        <button type="submit" class="btn btn-secondary">REGISTRAR EN EL SISTEMA</button>
+        <button type="submit" class="btn btn-secondary">REGISTRAR EN EL CIRCO</button>
     </form>
 </div>
 </body>

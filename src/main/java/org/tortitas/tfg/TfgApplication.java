@@ -1,47 +1,61 @@
 package org.tortitas.tfg;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.springframework.ai.vectorstore.VectorStore;
+import com.mongodb.client.MongoClients;
+import org.springframework.ai.vectorstore.mongodb.atlas.MongoDBAtlasVectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import org.tortitas.tfg.controllers.EmbeddingController;
-import org.tortitas.tfg.models.Game;
-import org.tortitas.tfg.repositories.GameRepository;
 import org.tortitas.tfg.services.GameService;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Vector;
-import java.util.stream.IntStream;
-
+/**
+ *Clase principal y punto de entrada de la aplicacion.
+ *<p>
+ *Se encarga de arrancar el ecosistema del proyecto (servicios, seguridad, repositorios, etc.).
+ *Ademas, incluye una logica de inicializacion que comprueba si la base de datos de MongoDB
+ *esta vacia para realizar una carga automatica del catalogo de juegos desde un archivo JSON local.
+ *</p>
+ */
 @SpringBootApplication
-@EnableMongoRepositories
+@EnableMongoRepositories //Habilita de forma explicita el uso de repositorios de Spring Data MongoDB
 public class TfgApplication {
-    @Autowired
-    GameRepository gameRepository;
-    @Autowired
-    private GameService gameService;
+
+    /**Inyectamos el servicio de juegos para gestionar la lectura e insercion por lotes del JSON.*/
+    @Autowired GameService gameService;
+
+    /**Recupera la cadena de conexion de MongoDB directamente desde el archivo 'application.properties'.*/
+    @Value("${spring.mongodb.uri}")
+    String uri;
 
     public static void main(String[] args) {
         SpringApplication.run(TfgApplication.class, args);
     }
+    /**
+     *Tarea que se ejecuta de forma automatica inmediatamente despues de que la app termine de arrancar.
+     *<p>
+     *Se conecta directamente a la coleccion de MongoDB, cuenta cuantos documentos hay guardados y, si la base de datos
+     *esta totalmente vacia, inicia la lectura y vectorizacion del archivo JSON del catalogo de juegos.
+     *En caso contrario, salta la carga y continua la ejecucion normal.
+     *</p>
+     * @return Una instancia de {@link CommandLineRunner} que Spring gestionara de forma automatica.
+     */
     @Bean
     public CommandLineRunner cargarDatos() {
         return args -> {
-            long count = gameRepository.count();
-            if (count == 0) {
+            //Nos conectamos de forma nativa a la base de datos "PruebaMongo" y a su coleccion "GameItem"
+            //para contar la cantidad exacta de documentos que existen actualmente.
+            long c = MongoClients.create(uri).getDatabase("PruebaMongo").getCollection("GameItem").countDocuments();
+            //Luego se evalua el estado de la base de datos
+            if (c == 0) {
+                //Si la base de datos de MongoDB esta vacia, cargamos el archivo JSON
                 gameService.cargarJuegosDesdeJson("src/main/resources/out.json");
             } else {
-                System.out.println("Juegos ya cargados en MongoDB (" + count + "), saltando carga.");
+                //Si no esta vacia, continua la ejecucion de forma normal
+                System.out.println("Juegos ya cargados en MongoDB (" + c + "), saltando carga.");
             }
         };
     }
 }
-

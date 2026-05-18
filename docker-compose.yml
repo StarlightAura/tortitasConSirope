@@ -1,4 +1,18 @@
 services:
+  ollama:
+    image: ollama/ollama:rocm
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    pull_policy: always
+    tty: true
+    restart: unless-stopped
+   # devices:
+     # kfd and dri device access needed for AMDGPU ROCm support to work
+     # - /dev/kfd:/dev/kfd
+     # - /dev/dri:/dev/dri
+
+
   springapp:
     container_name: springapp
     image: tortitas-con-sirope:1.0.0
@@ -11,15 +25,22 @@ services:
       - DATABASE_PASSWORD=${DB_PASSWORD}
       - SPRING_MONGODB_URI=${MONGO_URI}
       - SPRING_MONGO_DB=${MONGO_DB}
+      - SPRING_MONGO_COLLECTION_NAME=${MONGO_COLLECTION_NAME}
+      - SPRING_MONGO_INDEX_NAME=${MONGO_INDEX_NAME}
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SERVER_PORT=8787
       - SPRING_SECURITY_USER_NAME=disable
       - SPRING_AUTOCONFIGURE_EXCLUDE=org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
       - SPRING_AI_OLLAMA_BASE_URL=${OLLAMA_URL}
     depends_on:
+      - ollama
       - games
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    restart: always
+
+
+
   games:
     container_name: games
     image: postgres
@@ -30,12 +51,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - PGDATA=/var/lib/postgresql
+    volumes:
+      - ./sql/postgres_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./sql/postgres_data.sql:/docker-entrypoint-initdb.d/02_data.sql
     restart: always
-  ollama:
-    image: ollama/ollama:latest
-    container_name: ollama
-    ports:
-      - 11434:11434
-    pull_policy: always
-    tty: true
-    restart: unless-stopped
