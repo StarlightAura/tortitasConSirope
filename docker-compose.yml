@@ -7,10 +7,10 @@ services:
     pull_policy: always
     tty: true
     restart: unless-stopped
-    devices:
-      # kfd and dri device access needed for AMDGPU ROCm support to work
-      - /dev/kfd:/dev/kfd
-      - /dev/dri:/dev/dri
+   # devices:
+     # kfd and dri device access needed for AMDGPU ROCm support to work
+     # - /dev/kfd:/dev/kfd
+     # - /dev/dri:/dev/dri
 
 
   springapp:
