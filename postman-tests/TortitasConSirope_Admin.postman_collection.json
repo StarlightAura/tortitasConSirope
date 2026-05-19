@@ -1,0 +1,255 @@
+{
+  "info": {
+    "_postman_id": "b4777a42-d6a1-4eb5-959c-0b61565209a2",
+    "name": "TortitasConSirope_Admin",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54572178",
+    "_collection_link": "https://go.postman.co/collection/54572178-b4777a42-d6a1-4eb5-959c-0b61565209a2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "login exitoso",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var respuesta = pm.response.json();\r",
+              "pm.collectionVariables.set(\"token\", respuesta.token);\r",
+              "pm.test(\"Login exitoso - token recibido\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    pm.expect(respuesta.token).to.not.be.undefined;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nombreUser\": \"caine\",\r\n  \"password\": \"abel\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8787/api/auth/signin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8787",
+          "path": [
+            "api",
+            "auth",
+            "signin"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "fallo sin token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Rechazado sin token - 401\", function () {\r",
+              "    pm.response.to.have.status(401);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8787/api/recommendations?product=dark souls",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8787",
+          "path": [
+            "api",
+            "recommendations"
+          ],
+          "query": [
+            {
+              "key": "product",
+              "value": "dark souls"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "insercion con vectorizacion",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Producto insertado y vectorizado\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    pm.expect(pm.response.text()).to.include(\"correctamente\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"sid\": 5000,\r\n  \"name\": \"PEAK\",\r\n  \"description\": \"PEAK es un juego cooperativo de escalada en el que un solo error puede ser fatal. Ya sea en solitario o en grupo, la única esperanza de salir de la misteriosa isla es subiendo hasta la cima de la montaña del centro. ¿Tenéis lo que hace falta para subir al PICO?\",\r\n  \"genres\": [\"Action, Adventure, Indie\"],\r\n  \"tags\": [\"Simulation, Cooperatives, Indie, First Person\"],\r\n  \"developers\": [\"Team PEAK, Aggro Crab, Evil Landfall?\"],\r\n  \"languages\": [\"English, Spanish, French, Italian, German\"],\r\n  \"full_price\": 749,\r\n  \"store_url\": \"https://store.steampowered.com/app/3527290/PEAK/\",\r\n  \"store_uscore\": 96,\r\n  \"published_store\": \"2025-06-16\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8787/api/products",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8787",
+          "path": [
+            "api",
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "recomendaciones con token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Recomendaciones recibidas con token válido\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    var recomendaciones = pm.response.json();\r",
+              "    pm.expect(recomendaciones).to.be.an(\"array\").that.is.not.empty;\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:8787/api/recommendations?product=subnautica",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8787",
+          "path": [
+            "api",
+            "recommendations"
+          ],
+          "query": [
+            {
+              "key": "product",
+              "value": "subnautica"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

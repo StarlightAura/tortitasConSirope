@@ -1,10 +1,10 @@
 {
   "info": {
-    "_postman_id": "b4777a42-d6a1-4eb5-959c-0b61565209a2",
-    "name": "TortitasConSirope",
+    "_postman_id": "cbc2e345-4d4b-424f-9a15-215a470aa3a7",
+    "name": "TortitasConSirope_User",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "54572178",
-    "_collection_link": "https://go.postman.co/collection/54572178-b4777a42-d6a1-4eb5-959c-0b61565209a2?source=collection_link"
+    "_collection_link": "https://go.postman.co/collection/54572178-cbc2e345-4d4b-424f-9a15-215a470aa3a7?source=collection_link"
   },
   "item": [
     {
@@ -27,12 +27,15 @@
           }
         }
       ],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
       "request": {
-        "method": "POST",
+        "method": "GET",
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"nombreUser\": \"patata\",\r\n  \"password\": \"abcd\"\r\n}",
+          "raw": "{\r\n  \"nombreUser\": \"tortitas\",\r\n  \"password\": \"sirope\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -73,10 +76,13 @@
         }
       ],
       "request": {
+        "auth": {
+          "type": "noauth"
+        },
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "http://localhost:8787/api/recommendations?product=dark souls",
+          "raw": "http://localhost:8787/api/recommendations?product=Half-Life",
           "protocol": "http",
           "host": [
             "localhost"
@@ -89,7 +95,7 @@
           "query": [
             {
               "key": "product",
-              "value": "dark souls"
+              "value": "Half-Life"
             }
           ]
         }
@@ -115,17 +121,28 @@
         }
       ],
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
         "method": "POST",
         "header": [
           {
             "key": "Authorization",
             "value": "Bearer {{token}}",
-            "type": "text"
+            "type": "text",
+            "disabled": true
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\r\n  \"sid\": 99999,\r\n  \"name\": \"Dark Souls\",\r\n  \"description\": \"A challenging action RPG set in a dark fantasy world full of danger\",\r\n  \"genres\": \"Action, RPG\",\r\n  \"tags\": \"Difficult, Dark Fantasy, Action RPG, Souls-like\",\r\n  \"developers\": \"FromSoftware\",\r\n  \"languages\": \"English\",\r\n  \"full_price\": 1999,\r\n  \"store_url\": \"https://store.steampowered.com/app/211420\",\r\n  \"store_uscore\": 95,\r\n  \"published_store\": \"2012-08-24\"\r\n}",
+          "raw": "{\r\n  \"sid\": 5000,\r\n  \"name\": \"PEAK\",\r\n  \"description\": \"PEAK es un juego cooperativo de escalada en el que un solo error puede ser fatal. Ya sea en solitario o en grupo, la única esperanza de salir de la misteriosa isla es subiendo hasta la cima de la montaña del centro. ¿Tenéis lo que hace falta para subir al PICO?\",\r\n  \"genres\": [\"Action, Adventure, Indie\"],\r\n  \"tags\": [\"Simulation, Cooperatives, Indie, First Person\"],\r\n  \"developers\": [\"Team PEAK, Aggro Crab, Evil Landfall?\"],\r\n  \"languages\": [\"English, Spanish, French, Italian, German\"],\r\n  \"full_price\": 749,\r\n  \"store_url\": \"https://store.steampowered.com/app/3527290/PEAK/\",\r\n  \"store_uscore\": 96,\r\n  \"published_store\": \"2025-06-16\"\r\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -167,16 +184,27 @@
         }
       ],
       "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
         "method": "GET",
         "header": [
           {
             "key": "Authorization",
             "value": "Bearer {{token}}",
-            "type": "text"
+            "type": "text",
+            "disabled": true
           }
         ],
         "url": {
-          "raw": "http://localhost:8787/api/recommendations?product=dark%20souls",
+          "raw": "http://localhost:8787/api/recommendations?product=Half-Life",
           "protocol": "http",
           "host": [
             "localhost"
@@ -189,7 +217,7 @@
           "query": [
             {
               "key": "product",
-              "value": "dark%20souls"
+              "value": "Half-Life"
             }
           ]
         }
